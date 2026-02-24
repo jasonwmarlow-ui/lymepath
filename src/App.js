@@ -13,7 +13,11 @@ function App() {
     setIsLoading(true);
     const result = await fetchPathways();
     setPathwayItems(result.pathways);
-    setDataError(result.usedFallback ? 'Loaded local fallback data.' : '');
+    setDataError(
+      result.usedFallback
+        ? `Unable to reach ${result.endpoint}. Loaded local fallback data.`
+        : ''
+    );
     setIsLoading(false);
   };
 

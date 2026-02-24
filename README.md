@@ -18,6 +18,14 @@ npm start
 
 App runs at [http://localhost:3000](http://localhost:3000).
 
+To use a backend API, create `.env.local`:
+
+```bash
+cp .env.example .env.local
+```
+
+Set `REACT_APP_PATHWAYS_API_URL` to your endpoint before starting the app.
+
 ## Scripts
 
 - `npm start`: launch development server
@@ -35,9 +43,11 @@ App runs at [http://localhost:3000](http://localhost:3000).
 
 ## Data Behavior
 
-- App fetches pathways from `/pathways.json` at load.
+- App fetches pathways from `REACT_APP_PATHWAYS_API_URL` when configured.
+- Default endpoint is `/pathways.json` when no env var is set.
 - If fetch fails, it falls back to local seed data in `src/data/pathways.js`.
 - Filter state is persisted in `localStorage` under `lymepath.filters`.
+- API response can be either an array of pathways or `{ "pathways": [...] }`.
 
 ## Next Changes You Can Add
 
