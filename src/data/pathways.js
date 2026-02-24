@@ -1,0 +1,42 @@
+export const pathways = [
+  {
+    id: 'provider-visit',
+    title: 'Schedule provider follow-up',
+    description: 'Prepare symptoms, medication notes, and targeted questions.',
+    effort: 'medium',
+    type: 'medical',
+    priority: 1,
+  },
+  {
+    id: 'daily-tracker',
+    title: 'Track daily symptoms',
+    description: 'Record pain, sleep quality, and energy with a short template.',
+    effort: 'low',
+    type: 'tracking',
+    priority: 2,
+  },
+  {
+    id: 'sleep-routine',
+    title: 'Build sleep routine',
+    description: 'Use consistent lights-out timing and wind-down steps.',
+    effort: 'medium',
+    type: 'lifestyle',
+    priority: 3,
+  },
+  {
+    id: 'support-group',
+    title: 'Join peer support group',
+    description: 'Add one community session each week for accountability.',
+    effort: 'low',
+    type: 'support',
+    priority: 4,
+  },
+  {
+    id: 'movement-plan',
+    title: 'Introduce movement plan',
+    description: 'Start with short, low-impact activity and increase gradually.',
+    effort: 'high',
+    type: 'lifestyle',
+    priority: 5,
+  },
+];
