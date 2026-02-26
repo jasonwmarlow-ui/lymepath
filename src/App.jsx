@@ -1,18 +1,50 @@
 import { useState, useEffect, useRef } from "react";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts";
 
+// ══════════════════════════════════════════════════
+// DESIGN SYSTEM — Living Document
+// Clean, confident. DM Sans throughout. Muted teal accent.
+// Light-first, dark adaptive.
+// ══════════════════════════════════════════════════
 const C = {
-  bg:"#f2f3f7", surface:"#ffffff", border:"#e4e6ed", borderMid:"#cdd0db",
-  text:"#111827", textMuted:"#4a5568", textDim:"#9aa3b2",
-  navy:"#1e2d5a", navySoft:"#eceef6",
-  teal:"#4ab8c4", tealSoft:"#e6f6f8",
-  steel:"#5a8fa0", steelSoft:"#eaf2f5",
-  green:"#2a8a6a", greenSoft:"#e6f5f0",
-  amber:"#b05a2a", amberSoft:"#fdf0e8",
-  plum:"#7a4a8a", plumSoft:"#f3eef8",
-  terracotta:"#c4704a", terraSoft:"#fdf0e8",
-  gold:"#c8a84a", goldSoft:"#fdf8e8",
-  rose:"#c45a6a", roseSoft:"#faeef0",
+  bg:          "var(--lp-bg)",
+  surface:     "var(--lp-surface)",
+  surfaceHigh: "var(--lp-surface-high)",
+  border:      "var(--lp-border)",
+  borderMid:   "var(--lp-border-mid)",
+  text:        "var(--lp-text)",
+  textMuted:   "var(--lp-text-muted)",
+  textDim:     "var(--lp-text-dim)",
+  navy:        "var(--lp-ink)",
+  navySoft:    "var(--lp-ink-soft)",
+  teal:        "var(--lp-accent)",
+  tealSoft:    "var(--lp-accent-soft)",
+  green:       "var(--lp-green)",
+  greenSoft:   "var(--lp-green-soft)",
+  amber:       "var(--lp-amber)",
+  amberSoft:   "var(--lp-amber-soft)",
+  steel:       "var(--lp-steel)",
+  steelSoft:   "var(--lp-steel-soft)",
+  plum:        "var(--lp-plum)",
+  plumSoft:    "var(--lp-plum-soft)",
+  terracotta:  "var(--lp-terra)",
+  terraSoft:   "var(--lp-terra-soft)",
+  gold:        "var(--lp-gold)",
+  goldSoft:    "var(--lp-gold-soft)",
+  rose:        "var(--lp-rose)",
+  roseSoft:    "var(--lp-rose-soft)",
+  danger:      "var(--lp-danger)",
+  dangerBg:    "var(--lp-danger-bg)",
+  onDark:      "#fff",
+  overlay:     "var(--lp-overlay)",
+  graphAxes:   "var(--lp-text-dim)",
+  graphGrid:   "var(--lp-border)",
+};
+
+const FONTS = {
+  serif:  "'DM Sans', 'Helvetica Neue', sans-serif",
+  sans:   "'DM Sans', 'Helvetica Neue', sans-serif",
+  mono:   "'DM Mono', 'Courier New', monospace",
 };
 
 // ── Data ─────────────────────────────────────────────────────────────────────
@@ -47,11 +79,11 @@ const WEARABLE_DATA = [
 ];
 
 const SYMS = {
-  fatigue:{color:"#1e2d5a",label:"Fatigue"},
-  cognition:{color:"#b05a2a",label:"Cognition"},
-  pain:{color:"#7a4a8a",label:"Pain"},
-  mood:{color:"#2a8a6a",label:"Mood"},
-  sleep:{color:"#4ab8c4",label:"Sleep"},
+  fatigue:{color:"var(--lp-data-1)",label:"Fatigue"},
+  cognition:{color:"var(--lp-data-2)",label:"Cognition"},
+  pain:{color:"var(--lp-data-3)",label:"Pain"},
+  mood:{color:"var(--lp-data-4)",label:"Mood"},
+  sleep:{color:"var(--lp-data-5)",label:"Sleep"},
 };
 
 const TIMELINE = [
@@ -74,10 +106,10 @@ const WORDS = [
   {text:"hopeful",count:8,type:"signal"},
 ];
 const WORD_C = {
-  symptom:{color:"#1e2d5a",bg:"#eceef6"},
-  pattern:{color:"#b05a2a",bg:"#fdf0e8"},
-  signal:{color:"#2a8a6a",bg:"#e6f5f0"},
-  context:{color:"#7a4a8a",bg:"#f3eef8"},
+  symptom:{color:"var(--lp-data-1)",bg:"var(--lp-surface-highlight)"},
+  pattern:{color:"var(--lp-data-2)",bg:"var(--lp-surface-highlight)"},
+  signal:{color:"var(--lp-data-4)",bg:"var(--lp-surface-highlight)"},
+  context:{color:"var(--lp-data-3)",bg:"var(--lp-surface-highlight)"},
 };
 
 const INSIGHTS = [
@@ -128,7 +160,13 @@ const RADIAL = {
   Fatigue:[8,7,6,5,4,3,3],Cognition:[7,8,7,6,5,4,3],
   Pain:[6,6,5,4,3,2,1],Sleep:[5,6,7,7,6,5,4],Mood:[4,3,4,5,6,7,9],
 };
-const RCOL = {Fatigue:"#1e2d5a",Cognition:"#b05a2a",Pain:"#7a4a8a",Sleep:"#4ab8c4",Mood:"#2a8a6a"};
+const RCOL = {
+  Fatigue:"var(--lp-data-1)",
+  Cognition:"var(--lp-data-2)",
+  Pain:"var(--lp-data-3)",
+  Sleep:"var(--lp-data-5)",
+  Mood:"var(--lp-data-4)"
+};
 
 const VOICE_TURNS = [
   {ai:"Hello. I'm glad you're here.\n\nSpeak plainly — your experience, what you're feeling, what's shifted. I'll listen carefully.\n\nWhere would you like to begin?",
@@ -142,10 +180,10 @@ const VOICE_TURNS = [
    extract:{items:[{text:"Reduced work and screen time — week 9",type:"context"},{text:"Mood correlation with overlapping changes",type:"pattern"},{text:"Sound sensitivity noted post-microdose",type:"symptom"}]}},
 ];
 const TAG_C = {
-  context:{bg:"#e6f5f0",text:"#2a8a6a",dot:"#2a8a6a"},
-  pattern:{bg:"#fdf0e8",text:"#b05a2a",dot:"#b05a2a"},
-  symptom:{bg:"#e6f6f8",text:"#4ab8c4",dot:"#4ab8c4"},
-  timeline:{bg:"#eceef6",text:"#1e2d5a",dot:"#1e2d5a"},
+  context: {bg:"var(--lp-amber-soft)",  text:"var(--lp-amber)",  dot:"var(--lp-amber)"},
+  pattern: {bg:"var(--lp-plum-soft)",   text:"var(--lp-plum)",   dot:"var(--lp-plum)"},
+  symptom: {bg:"var(--lp-terra-soft)",  text:"var(--lp-terra)",  dot:"var(--lp-terra)"},
+  timeline:{bg:"var(--lp-steel-soft)", text:"var(--lp-steel)", dot:"var(--lp-steel)"},
 };
 
 const OB_STEPS = ["path","orientation","coinfections","environment","wearables","ready"];
@@ -153,8 +191,8 @@ const OB_STEPS = ["path","orientation","coinfections","environment","wearables",
 // ── Atoms ─────────────────────────────────────────────────────────────────────
 function Card({children,style={}}) {
   return (
-    <div style={{background:C.surface,borderRadius:16,padding:18,
-      boxShadow:"0 2px 16px rgba(0,0,0,0.055)",border:`1px solid ${C.border}`,...style}}>
+    <div style={{background:C.surface,borderRadius:22,padding:18,
+      boxShadow:"var(--lp-shadow-soft)",border:"1px solid var(--lp-border-soft)",lineHeight:1.5,...style}}>
       {children}
     </div>
   );
@@ -162,16 +200,16 @@ function Card({children,style={}}) {
 function Label({children,sub}) {
   return (
     <div style={{marginBottom:12}}>
-      <div style={{fontSize:13,fontWeight:600,color:C.text,fontFamily:"'Helvetica Neue',sans-serif",letterSpacing:"-0.01em"}}>{children}</div>
-      {sub && <div style={{fontSize:11,color:C.textDim,marginTop:2,fontFamily:"sans-serif"}}>{sub}</div>}
+      <div className="section-title" style={{fontSize:13,fontWeight:600,color:C.text,fontFamily:FONTS.sans,letterSpacing:"-0.01em"}}>{children}</div>
+      {sub && <div style={{fontSize:11,color:C.textDim,marginTop:2,fontFamily:FONTS.sans}}>{sub}</div>}
     </div>
   );
 }
 function VBtn({onClick,label="Ask aloud"}) {
   return (
     <button onClick={onClick} style={{display:"flex",alignItems:"center",gap:5,
-      background:C.tealSoft,border:`1px solid ${C.teal}55`,color:C.teal,
-      borderRadius:20,padding:"6px 12px",fontSize:11,fontFamily:"sans-serif",
+      background:C.tealSoft,border:"1px solid var(--lp-border-strong)",color:C.teal,
+      borderRadius:20,padding:"6px 12px",fontSize:11,fontFamily:FONTS.sans,
       cursor:"pointer",fontWeight:500,whiteSpace:"nowrap",flexShrink:0}}>
       <span style={{fontSize:13}}>◎</span>{label}
     </button>
@@ -180,7 +218,7 @@ function VBtn({onClick,label="Ask aloud"}) {
 function EvidenceBadge({label,color,bg}) {
   return (
     <span style={{fontSize:9,padding:"2px 8px",borderRadius:10,background:bg,color,
-      fontFamily:"sans-serif",letterSpacing:"0.07em",textTransform:"uppercase",fontWeight:600}}>
+      fontFamily:FONTS.sans,letterSpacing:"0.07em",textTransform:"uppercase",fontWeight:600}}>
       {label}
     </span>
   );
@@ -189,7 +227,7 @@ function Tip({active,payload,label}) {
   if (!active||!payload?.length) return null;
   return (
     <div style={{background:C.surface,border:`1px solid ${C.border}`,padding:"9px 13px",
-      borderRadius:10,boxShadow:"0 4px 16px rgba(0,0,0,0.10)",fontSize:11,fontFamily:"sans-serif"}}>
+      borderRadius:10,boxShadow:"var(--lp-shadow-tooltip)",fontSize:11,fontFamily:FONTS.sans}}>
       <div style={{color:C.textDim,marginBottom:5,fontWeight:600}}>{label}</div>
       {payload.map(p=>(
         <div key={p.dataKey} style={{color:p.stroke,marginBottom:2}}>
@@ -204,24 +242,24 @@ function Grads() {
     <defs>
       {Object.entries(SYMS).map(([k,v])=>(
         <linearGradient key={k} id={`g_${k}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={v.color} stopOpacity={0.18}/>
+          <stop offset="0%" stopColor={v.color} stopOpacity={0.28}/>
           <stop offset="100%" stopColor={v.color} stopOpacity={0}/>
         </linearGradient>
       ))}
       <linearGradient id="g_hrv" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor={C.teal} stopOpacity={0.2}/><stop offset="100%" stopColor={C.teal} stopOpacity={0}/>
+        <stop offset="0%" stopColor={C.teal} stopOpacity={0.3}/><stop offset="100%" stopColor={C.teal} stopOpacity={0}/>
       </linearGradient>
       <linearGradient id="g_sleep_h" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor={C.green} stopOpacity={0.2}/><stop offset="100%" stopColor={C.green} stopOpacity={0}/>
+        <stop offset="0%" stopColor={C.green} stopOpacity={0.3}/><stop offset="100%" stopColor={C.green} stopOpacity={0}/>
       </linearGradient>
       <linearGradient id="g_steps" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor={C.navy} stopOpacity={0.18}/><stop offset="100%" stopColor={C.navy} stopOpacity={0}/>
+        <stop offset="0%" stopColor={C.navy} stopOpacity={0.28}/><stop offset="100%" stopColor={C.navy} stopOpacity={0}/>
       </linearGradient>
       <linearGradient id="g_rhr" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor={C.rose} stopOpacity={0.2}/><stop offset="100%" stopColor={C.rose} stopOpacity={0}/>
+        <stop offset="0%" stopColor={C.rose} stopOpacity={0.3}/><stop offset="100%" stopColor={C.rose} stopOpacity={0}/>
       </linearGradient>
       <linearGradient id="g_temp" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor={C.amber} stopOpacity={0.2}/><stop offset="100%" stopColor={C.amber} stopOpacity={0}/>
+        <stop offset="0%" stopColor={C.amber} stopOpacity={0.3}/><stop offset="100%" stopColor={C.amber} stopOpacity={0}/>
       </linearGradient>
     </defs>
   );
@@ -276,9 +314,9 @@ function Onboarding({onComplete}) {
 
   const Btn = ({label,onClick,disabled}) => (
     <button onClick={onClick} disabled={disabled}
-      style={{width:"100%",padding:14,background:disabled?"#d0d3dc":C.navy,
-        border:"none",color:"white",borderRadius:14,fontSize:13,
-        fontFamily:"sans-serif",cursor:disabled?"default":"pointer",fontWeight:500,marginTop:12}}>
+      style={{width:"100%",padding:14,background:disabled?"var(--lp-disabled-bg)":C.navySoft,
+        border:"none",color:disabled?"var(--lp-disabled-text)":C.teal,borderRadius:14,fontSize:13,
+        fontFamily:FONTS.sans,cursor:disabled?"default":"pointer",fontWeight:500,marginTop:12}}>
       {label}
     </button>
   );
@@ -288,13 +326,14 @@ function Onboarding({onComplete}) {
       <Dots/>
       <div style={{...wrap,paddingTop:24}}>
         <div style={{fontSize:11,letterSpacing:"0.14em",textTransform:"uppercase",color:C.textDim,
-          fontFamily:"sans-serif",marginBottom:10,textAlign:"center"}}>Welcome</div>
-        <div style={{fontSize:19,fontWeight:300,color:C.navy,textAlign:"center",lineHeight:1.4,
-          marginBottom:8,fontFamily:"'Helvetica Neue',sans-serif"}}>
+          fontFamily:FONTS.sans,marginBottom:10,textAlign:"center"}}>Welcome</div>
+        <div style={{fontSize:22,fontWeight:700,color:C.navy,textAlign:"center",lineHeight:1.4,
+          marginBottom:8,fontFamily:FONTS.sans}}
+          >
           Before Lyme had a name,<br/>it had witnesses.
         </div>
         <div style={{fontSize:12,color:C.textMuted,textAlign:"center",lineHeight:1.7,
-          marginBottom:28,fontFamily:"Georgia,serif",fontStyle:"italic"}}>
+          marginBottom:28,fontFamily:FONTS.sans,fontStyle:"italic"}}>
           LymePath listens carefully, over time, and in context.<br/>Where are you right now?
         </div>
         {[
@@ -309,8 +348,8 @@ function Onboarding({onComplete}) {
               display:"flex",alignItems:"center",gap:14,transition:"all 0.2s"}}>
             <span style={{fontSize:18,color:C.navy,opacity:0.6}}>{p.icon}</span>
             <div>
-              <div style={{fontSize:13,fontWeight:600,color:C.text,fontFamily:"'Helvetica Neue',sans-serif",marginBottom:2}}>{p.title}</div>
-              <div style={{fontSize:11,color:C.textDim,fontFamily:"sans-serif"}}>{p.sub}</div>
+              <div style={{fontSize:13,fontWeight:600,color:C.text,fontFamily:FONTS.sans,marginBottom:2}}>{p.title}</div>
+              <div style={{fontSize:11,color:C.textDim,fontFamily:FONTS.sans}}>{p.sub}</div>
             </div>
           </div>
         ))}
@@ -323,7 +362,7 @@ function Onboarding({onComplete}) {
       <Dots/>
       <div style={wrap}>
         <div style={{marginTop:16,marginBottom:6}}>
-          <div style={{fontSize:15,fontWeight:500,color:C.navy,fontFamily:"'Helvetica Neue',sans-serif",marginBottom:10,lineHeight:1.4}}>
+          <div style={{fontSize:16,fontWeight:700,color:C.navy,fontFamily:FONTS.sans,letterSpacing:"-0.01em",marginBottom:10,lineHeight:1.4}}>
             What LymePath is — and isn't
           </div>
           {[
@@ -333,8 +372,8 @@ function Onboarding({onComplete}) {
             {title:"The stories are consistent.",body:"Across thousands of people with Lyme, the same arcs appear. When they repeat at scale, they become signal.",color:C.gold},
           ].map((s,i)=>(
             <div key={i} style={{padding:"11px 13px",marginBottom:8,background:C.bg,borderRadius:12,borderLeft:`3px solid ${s.color}`}}>
-              <div style={{fontSize:12,fontWeight:600,color:s.color,fontFamily:"sans-serif",marginBottom:3}}>{s.title}</div>
-              <div style={{fontSize:11,color:C.textMuted,fontFamily:"sans-serif",lineHeight:1.6}}>{s.body}</div>
+              <div style={{fontSize:12,fontWeight:600,color:s.color,fontFamily:FONTS.sans,marginBottom:3}}>{s.title}</div>
+              <div style={{fontSize:11,color:C.textMuted,fontFamily:FONTS.sans,lineHeight:1.6}}>{s.body}</div>
             </div>
           ))}
         </div>
@@ -348,8 +387,8 @@ function Onboarding({onComplete}) {
       <Dots/>
       <div style={wrap}>
         <div style={{marginTop:16}}>
-          <div style={{fontSize:15,fontWeight:500,color:C.navy,fontFamily:"'Helvetica Neue',sans-serif",marginBottom:4}}>Co-infections</div>
-          <div style={{fontSize:11,color:C.textDim,fontFamily:"sans-serif",lineHeight:1.6,marginBottom:14}}>
+          <div style={{fontSize:16,fontWeight:700,color:C.navy,fontFamily:FONTS.sans,letterSpacing:"-0.01em",marginBottom:4}}>Co-infections</div>
+          <div style={{fontSize:11,color:C.textDim,fontFamily:FONTS.sans,lineHeight:1.6,marginBottom:14}}>
             Co-infections are core to your illness picture, not secondary. Untested is valid information too.
           </div>
           {COINFECTIONS.map(ci=>{
@@ -360,13 +399,13 @@ function Onboarding({onComplete}) {
                 borderRadius:12,border:`1px solid ${C.border}`,
                 borderLeft:`3px solid ${s.positive?ci.color:s.tested?C.steel:C.borderMid}`}}>
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-                  <span style={{fontSize:13,fontWeight:500,color:C.text,fontFamily:"sans-serif"}}>{ci.label}</span>
+                  <span style={{fontSize:13,fontWeight:500,color:C.text,fontFamily:FONTS.sans}}>{ci.label}</span>
                   <div style={{display:"flex",gap:5}}>
                     {["untested","negative","positive"].map(v=>(
                       <button key={v} onClick={()=>setCoInf(p=>({...p,[ci.key]:{tested:v!=="untested",positive:v==="positive"}}))}
-                        style={{padding:"3px 8px",borderRadius:10,fontSize:10,fontFamily:"sans-serif",cursor:"pointer",
+                        style={{padding:"3px 8px",borderRadius:10,fontSize:10,fontFamily:FONTS.sans,cursor:"pointer",
                           border:`1px solid ${status===v?ci.color:C.border}`,
-                          background:status===v?(v==="positive"?ci.color+"22":C.steelSoft):C.surface,
+                          background:status===v?(v==="positive"?C.navySoft:C.steelSoft):C.surface,
                           color:status===v?(v==="positive"?ci.color:C.steel):C.textDim}}>
                         {v}
                       </button>
@@ -376,7 +415,7 @@ function Onboarding({onComplete}) {
               </div>
             );
           })}
-          <div style={{fontSize:10,color:C.textDim,fontFamily:"sans-serif",marginTop:8,lineHeight:1.6,fontStyle:"italic"}}>
+          <div style={{fontSize:10,color:C.textDim,fontFamily:FONTS.sans,marginTop:8,lineHeight:1.6,fontStyle:"italic"}}>
             If untested, that's noted — incomplete testing is common and limits interpretation in ways we'll hold alongside your record.
           </div>
         </div>
@@ -390,23 +429,23 @@ function Onboarding({onComplete}) {
       <Dots/>
       <div style={wrap}>
         <div style={{marginTop:16}}>
-          <div style={{fontSize:15,fontWeight:500,color:C.navy,fontFamily:"'Helvetica Neue',sans-serif",marginBottom:4}}>Your environment</div>
-          <div style={{fontSize:11,color:C.textDim,fontFamily:"sans-serif",lineHeight:1.6,marginBottom:14}}>
+          <div style={{fontSize:16,fontWeight:700,color:C.navy,fontFamily:FONTS.sans,letterSpacing:"-0.01em",marginBottom:4}}>Your environment</div>
+          <div style={{fontSize:11,color:C.textDim,fontFamily:FONTS.sans,lineHeight:1.6,marginBottom:14}}>
             Where you live is part of your illness picture. Climate, altitude, mold, and smoke all affect how symptoms present and shift.
           </div>
           <div style={{marginBottom:10}}>
-            <div style={{fontSize:10,color:C.textDim,fontFamily:"sans-serif",letterSpacing:"0.08em",textTransform:"uppercase",marginBottom:5}}>Location</div>
+            <div style={{fontSize:10,color:C.textDim,fontFamily:FONTS.sans,letterSpacing:"0.08em",textTransform:"uppercase",marginBottom:5}}>Location</div>
             <input value={env.location} onChange={e=>setEnv(p=>({...p,location:e.target.value}))}
               placeholder="City, state or region"
               style={{width:"100%",padding:"10px 12px",borderRadius:10,border:`1px solid ${C.border}`,
-                fontSize:13,fontFamily:"sans-serif",color:C.text,background:C.bg,boxSizing:"border-box",outline:"none"}}/>
+                fontSize:13,fontFamily:FONTS.sans,color:C.text,background:C.bg,boxSizing:"border-box",outline:"none"}}/>
           </div>
           <div style={{marginBottom:14}}>
-            <div style={{fontSize:10,color:C.textDim,fontFamily:"sans-serif",letterSpacing:"0.08em",textTransform:"uppercase",marginBottom:6}}>Climate type</div>
+            <div style={{fontSize:10,color:C.textDim,fontFamily:FONTS.sans,letterSpacing:"0.08em",textTransform:"uppercase",marginBottom:6}}>Climate type</div>
             <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
               {["Humid","Dry","Coastal","High altitude","Variable","Unknown"].map(cl=>(
                 <button key={cl} onClick={()=>setEnv(p=>({...p,climate:cl}))}
-                  style={{padding:"5px 12px",borderRadius:16,fontSize:11,fontFamily:"sans-serif",cursor:"pointer",
+                  style={{padding:"5px 12px",borderRadius:16,fontSize:11,fontFamily:FONTS.sans,cursor:"pointer",
                     border:`1px solid ${env.climate===cl?C.teal:C.border}`,
                     background:env.climate===cl?C.tealSoft:C.surface,
                     color:env.climate===cl?C.teal:C.textDim}}>
@@ -426,12 +465,12 @@ function Onboarding({onComplete}) {
                 background:env[ex.key]?C.amberSoft:C.bg,
                 border:`1px solid ${env[ex.key]?C.amber:C.border}`,transition:"all 0.2s"}}>
               <div>
-                <div style={{fontSize:12,color:env[ex.key]?C.amber:C.text,fontFamily:"sans-serif",fontWeight:500}}>{ex.label}</div>
-                <div style={{fontSize:10,color:C.textDim,fontFamily:"sans-serif"}}>{ex.sub}</div>
+                <div style={{fontSize:12,color:env[ex.key]?C.amber:C.text,fontFamily:FONTS.sans,fontWeight:500}}>{ex.label}</div>
+                <div style={{fontSize:10,color:C.textDim,fontFamily:FONTS.sans}}>{ex.sub}</div>
               </div>
               <div style={{width:20,height:20,borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center",
                 background:env[ex.key]?C.amber:C.bg,border:`1.5px solid ${env[ex.key]?C.amber:C.borderMid}`}}>
-                {env[ex.key]&&<span style={{fontSize:11,color:"white",lineHeight:1}}>✓</span>}
+                {env[ex.key]&&<span style={{fontSize:11,color:C.onDark,lineHeight:1}}>✓</span>}
               </div>
             </div>
           ))}
@@ -446,8 +485,8 @@ function Onboarding({onComplete}) {
       <Dots/>
       <div style={wrap}>
         <div style={{marginTop:16}}>
-          <div style={{fontSize:15,fontWeight:500,color:C.navy,fontFamily:"'Helvetica Neue',sans-serif",marginBottom:4}}>Wearable data</div>
-          <div style={{fontSize:11,color:C.textDim,fontFamily:"sans-serif",lineHeight:1.6,marginBottom:14}}>
+          <div style={{fontSize:16,fontWeight:700,color:C.navy,fontFamily:FONTS.sans,letterSpacing:"-0.01em",marginBottom:4}}>Wearable data</div>
+          <div style={{fontSize:11,color:C.textDim,fontFamily:FONTS.sans,lineHeight:1.6,marginBottom:14}}>
             Wearable data anchors your story in time — making visible what memory can't reliably track. Entirely optional.
           </div>
           {[
@@ -463,8 +502,8 @@ function Onboarding({onComplete}) {
                 display:"flex",alignItems:"center",gap:14,transition:"all 0.2s"}}>
               <span style={{fontSize:18,color:C.navy,opacity:0.6}}>{w.icon}</span>
               <div style={{flex:1}}>
-                <div style={{fontSize:13,fontWeight:500,color:C.text,fontFamily:"sans-serif",marginBottom:2}}>{w.label}</div>
-                <div style={{fontSize:10,color:C.textDim,fontFamily:"sans-serif"}}>{w.metrics}</div>
+                <div style={{fontSize:13,fontWeight:500,color:C.text,fontFamily:FONTS.sans,marginBottom:2}}>{w.label}</div>
+                <div style={{fontSize:10,color:C.textDim,fontFamily:FONTS.sans}}>{w.metrics}</div>
               </div>
               {wearable===w.key&&<div style={{width:8,height:8,borderRadius:"50%",background:C.navy}}/>}
             </div>
@@ -483,15 +522,15 @@ function Onboarding({onComplete}) {
         <div style={{width:56,height:56,borderRadius:"50%",background:C.greenSoft,
           border:`2px solid ${C.green}44`,display:"flex",alignItems:"center",
           justifyContent:"center",margin:"0 auto 16px",fontSize:22,color:C.green}}>◉</div>
-        <div style={{fontSize:18,fontWeight:300,color:C.navy,lineHeight:1.4,marginBottom:8,fontFamily:"'Helvetica Neue',sans-serif"}}>
+        <div style={{fontSize:18,fontWeight:400,color:C.navy,lineHeight:1.4,marginBottom:8,fontFamily:FONTS.sans}}>
           Your record begins now.
         </div>
-        <div style={{fontSize:12,color:C.textMuted,lineHeight:1.7,marginBottom:28,fontFamily:"Georgia,serif",fontStyle:"italic"}}>
+        <div style={{fontSize:12,color:C.textMuted,lineHeight:1.7,marginBottom:28,fontFamily:FONTS.sans,fontStyle:"italic"}}>
           Speak plainly. There is no wrong way to begin.<br/>What you share will take shape over time.
         </div>
         <button onClick={onComplete}
-          style={{width:"100%",padding:14,background:C.navy,border:"none",color:"white",
-            borderRadius:14,fontSize:13,fontFamily:"sans-serif",cursor:"pointer",fontWeight:500}}>
+          style={{width:"100%",padding:14,background:C.navySoft,border:"none",color:C.teal,
+            borderRadius:14,fontSize:13,fontFamily:FONTS.sans,cursor:"pointer",fontWeight:500}}>
           Begin my first session →
         </button>
       </div>
@@ -503,39 +542,45 @@ function Onboarding({onComplete}) {
 // VOICE SESSION
 // ══════════════════════════════════════════════════
 // ElevenLabs voice ID — Rachel (calm, clear)
-const EL_VOICE_ID = "UgBBYS2sOqTuMpoF3BR0";
+const EL_VOICE_ID = "21m00Tcm4TlvDq8ikWAM";
+const SILENCE_MS = 1750;
+const MIN_UTTERANCE_CHARS = 12;
+const MIN_UTTERANCE_WORDS = 3;
+const ANTHROPIC_KEY_STORAGE = "lymepath.anthropicKey";
+const ELEVEN_KEY_STORAGE = "lymepath.elevenlabsKey";
+const ONBOARDED_STORAGE = "lymepath.onboarded";
 
-const SYSTEM_PROMPT = `You are LymePath — a voice companion for people living with Lyme disease. You sound like a health coach they genuinely trust: warm, unhurried, casually informed. Not a doctor. Not a therapist. Someone who’s done the reading, cares deeply, and knows how to listen without rushing to fix things.
+const SYSTEM_PROMPT = `You are LymePath — a voice companion for people living with Lyme disease. You sound like a health coach they genuinely trust: warm, unhurried, casually informed. Not a doctor. Not a therapist. Someone who's done the reading, cares deeply, and knows how to listen without rushing to fix things.
 
 VOICE & TONE
 - Warm and conversational. Casual but not flippant. Like talking to someone who gets it.
 - Medium pace. Never rushed. Never clinical.
 - Use plain language. If you use a medical term, explain it briefly in the same breath.
 - Never relentlessly positive. If something is hard, let it be hard.
-- Never give unsolicited medical opinions. You share what’s known, flag what isn’t, and leave decisions to them.
+- Never give unsolicited medical opinions. You share what's known, flag what isn't, and leave decisions to them.
 
-WHO YOU’RE TALKING TO
+WHO YOU'RE TALKING TO
 - Read the room. Some people are newly diagnosed and scared. Some are chronic, exhausted, and have been dismissed for years. Some are actively improving and cautiously hopeful.
-- Adapt your tone to what you’re hearing. Don’t assume. Listen first.
-- Treat desperation as information, not irrationality. If someone has tried something unusual, that’s worth understanding, not judging.
+- Adapt your tone to what you're hearing. Don't assume. Listen first.
+- Treat desperation as information, not irrationality. If someone has tried something unusual, that's worth understanding, not judging.
 
 HOW YOU LISTEN
 - Ask one question at a time. Always.
-- Default to open-ended questions: "How has that been for you?" "What does that feel like day to day?" "What’s shifted, if anything?"
-- If something specific comes up — a symptom, a treatment, a pattern, a moment — follow it. Ask a more direct question. "You mentioned sugar — that’s actually something worth unpacking a bit. Want to talk about it?"
-- When someone says "I don’t know" or "fine" or gives a very short answer, don’t drop it. Ask a softer version: "What would you say if you had to guess?" or "Fine like okay, or fine like getting by?"
-- When someone shares something painful — grief, anger, hopelessness — acknowledge it fully before asking anything. Don’t pivot. Don’t fix. Just be with it for a moment.
+- Default to open-ended questions: "How has that been for you?" "What does that feel like day to day?" "What's shifted, if anything?"
+- If something specific comes up — a symptom, a treatment, a pattern, a moment — follow it. Ask a more direct question. "You mentioned sugar — that's actually something worth unpacking a bit. Want to talk about it?"
+- When someone says "I don't know" or "fine" or gives a very short answer, don't drop it. Ask a softer version: "What would you say if you had to guess?" or "Fine like okay, or fine like getting by?"
+- When someone shares something painful — grief, anger, hopelessness — acknowledge it fully before asking anything. Don't pivot. Don't fix. Just be with it for a moment.
 
 WHAT YOU KNOW
-- You’re informed about Lyme disease, co-infections, common treatments (pharmaceutical and herbal), the controversy between IDSA and ILADS, the reality of chronic symptoms, and the emotional toll of being dismissed by the medical system.
-- When you know something, share it conversationally. "Bacteria actually does love sugar — it’s one of those things both clinical and non-clinical people tend to agree on."
-- When you don’t know something or the evidence is unclear, say so honestly. "Honestly, the research on that is pretty thin right now — here’s what we do know..."
+- You're informed about Lyme disease, co-infections, common treatments (pharmaceutical and herbal), the controversy between IDSA and ILADS, the reality of chronic symptoms, and the emotional toll of being dismissed by the medical system.
+- When you know something, share it conversationally. "Bacteria actually does love sugar — it's one of those things both clinical and non-clinical people tend to agree on."
+- When you don't know something or the evidence is unclear, say so honestly. "Honestly, the research on that is pretty thin right now — here's what we do know..."
 - Never overclaim. Never diagnose. Never prescribe.
 
 PACING & MEMORY
 - This is a voice conversation. Keep responses to 2-4 sentences maximum.
 - Remember everything said in this session. Reference it naturally when relevant. "Earlier you mentioned the fatigue was worst in the mornings — is that still true?"
-- Don’t summarize everything back. Just hold it and use it when it matters.
+- Don't summarize everything back. Just hold it and use it when it matters.
 
 RECORD EXTRACTION
 At the end of every response, output a JSON block on its own line in this exact format:
@@ -544,11 +589,8 @@ Only extract genuinely new, specific information mentioned in this turn.
 If nothing new to extract: EXTRACT:{"items":[]}
 Types: symptom (physical or cognitive), pattern (recurring behavior or trigger), context (life circumstances, environment, emotional state), timeline (dates, durations, sequences of events).`;
 
-
 function VoiceSession({onBack,initialPrompt,elKey,onConfigKey,anthropicKey}) {
-  const [orb, setOrb_] = useState("idle");
-  const orbR = useRef("idle");
-  const setOrb = v => { orbR.current = v; setOrb_(v); };
+  const [orb, setOrb] = useState("idle");
   const [aiText, setAiText] = useState("");
   const [transcript, setTranscript] = useState("");
   const [items, setItems] = useState([]);
@@ -556,47 +598,37 @@ function VoiceSession({onBack,initialPrompt,elKey,onConfigKey,anthropicKey}) {
   const [elapsed, setElapsed] = useState(0);
   const [started, setStarted] = useState(false);
   const [error, setError] = useState(null);
+  const [history, setHistory] = useState([]);
 
   const mountedR = useRef(true);
   const timerR = useRef(null);
   const recognitionR = useRef(null);
+  const audioR = useRef(null);
   const historyR = useRef([]);
   const transcriptR = useRef("");
-
-  // Audio (Web Audio API + MediaSource streaming)
-  const audioCtxR = useRef(null);
-  const currentAudioR = useRef(null); // { element, msURL }
-  const audioOnDoneR = useRef(null);
-
-  // VAD
-  const micStreamR = useRef(null);
-  const analyserR = useRef(null);
-  const vadRafR = useRef(null);
   const silenceTimerR = useRef(null);
-  const speechDetectedR = useRef(false);
-  const aboveThresholdFramesR = useRef(0); // consecutive frames above speech threshold
-  const interruptLockoutR = useRef(0);     // timestamp: no interruption before this
 
   useEffect(()=>{
     mountedR.current = true;
     return ()=>{
       mountedR.current = false;
       clearInterval(timerR.current);
-      if (recognitionR.current) try { recognitionR.current.abort(); } catch(e) {}
-      if (currentAudioR.current) {
-        try { currentAudioR.current.element.pause(); } catch(e) {}
-        if (currentAudioR.current.msURL) URL.revokeObjectURL(currentAudioR.current.msURL);
-      }
-      if (vadRafR.current) cancelAnimationFrame(vadRafR.current);
       clearTimeout(silenceTimerR.current);
-      if (micStreamR.current) micStreamR.current.getTracks().forEach(t => t.stop());
-      if (audioCtxR.current) audioCtxR.current.close().catch(()=>{});
+      if (recognitionR.current) try { recognitionR.current.abort(); } catch(e) {}
+      if (audioR.current) { audioR.current.pause(); audioR.current = null; }
+      window.speechSynthesis.cancel();
     };
   },[]);
 
   const fmt = s => `${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`;
+  const isMeaningfulUtterance = (text) => {
+    const clean = text.trim();
+    if (!clean) return false;
+    const words = clean.split(/\s+/).filter(Boolean);
+    return clean.length >= MIN_UTTERANCE_CHARS || words.length >= MIN_UTTERANCE_WORDS;
+  };
 
-  // ── Extract record items from Claude response ───
+  // ── Extract record items from GPT response ───
   const extractItems = (text) => {
     try {
       const match = text.match(/EXTRACT:(\{"items":\[.*?\]\})/);
@@ -605,40 +637,22 @@ function VoiceSession({onBack,initialPrompt,elKey,onConfigKey,anthropicKey}) {
     } catch(e) { return []; }
   };
 
-  // ── Stop current audio playback ──────────────────
-  const stopAudio = () => {
-    window.speechSynthesis.cancel();
-    if (currentAudioR.current) {
-      const {element, msURL} = currentAudioR.current;
-      try { element.pause(); } catch(e) {}
-      if (msURL) URL.revokeObjectURL(msURL);
-      currentAudioR.current = null;
-    }
-    audioOnDoneR.current = null;
-  };
-
-  // ── ElevenLabs streaming TTS via Web Audio API ───
+  // ── ElevenLabs TTS ──────────────────────────────
   const speak = async (text, onDone) => {
     if (!mountedR.current) return;
     const clean = text.replace(/EXTRACT:\{.*?\}/g,"").trim();
     setOrb("ai-speaking");
     setAiText(clean);
-    audioOnDoneR.current = onDone;
 
     if (!elKey) {
       const utt = new SpeechSynthesisUtterance(clean);
       utt.rate = 0.9; utt.pitch = 1.0;
       utt.onend = ()=>{ if(mountedR.current && onDone) onDone(); };
       window.speechSynthesis.speak(utt);
-      interruptLockoutR.current = Date.now() + 2000;
       return;
     }
 
     try {
-      if (!audioCtxR.current) audioCtxR.current = new AudioContext();
-      const audioCtx = audioCtxR.current;
-      if (audioCtx.state === "suspended") await audioCtx.resume();
-
       const res = await fetch(`/elevenlabs/v1/text-to-speech/${EL_VOICE_ID}/stream`, {
         method:"POST",
         headers:{"Content-Type":"application/json","xi-api-key":elKey},
@@ -649,58 +663,16 @@ function VoiceSession({onBack,initialPrompt,elKey,onConfigKey,anthropicKey}) {
         })
       });
       if (!res.ok) throw new Error(`ElevenLabs ${res.status}`);
-
-      // Create MediaSource so playback starts as first bytes arrive
-      const ms = new MediaSource();
-      const msURL = URL.createObjectURL(ms);
-      const audio = new Audio();
-      audio.src = msURL;
-
-      // Route through Web Audio API for monitoring / interruption
-      const elemSrc = audioCtx.createMediaElementSource(audio);
-      elemSrc.connect(audioCtx.destination);
-
-      const entry = {element: audio, msURL};
-      currentAudioR.current = entry;
-
-      // Open SourceBuffer and pump stream chunks in as they arrive
-      await new Promise((resolve, reject) => {
-        ms.addEventListener("sourceopen", async () => {
-          try {
-            const sb = ms.addSourceBuffer("audio/mpeg");
-            const reader = res.body.getReader();
-            const pump = async () => {
-              if (!mountedR.current || currentAudioR.current !== entry) { reader.cancel(); return; }
-              const {done, value} = await reader.read();
-              if (done) { if (ms.readyState === "open") ms.endOfStream(); return; }
-              if (sb.updating) await new Promise(r => sb.addEventListener("updateend", r, {once:true}));
-              sb.appendBuffer(value);
-              sb.addEventListener("updateend", pump, {once:true});
-            };
-            pump();
-            resolve();
-          } catch(e) { reject(e); }
-        }, {once:true});
-      });
-
-      audio.play();
-      interruptLockoutR.current = Date.now() + 2000;
-      audio.onended = () => {
-        if (currentAudioR.current === entry) {
-          URL.revokeObjectURL(msURL);
-          currentAudioR.current = null;
-          if (mountedR.current) {
-            const done = audioOnDoneR.current;
-            audioOnDoneR.current = null;
-            if (done) done();
-          }
-        }
-      };
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      if (audioR.current) audioR.current.pause();
+      audioR.current = new Audio(url);
+      audioR.current.onended = ()=>{ URL.revokeObjectURL(url); if(mountedR.current && onDone) onDone(); };
+      audioR.current.onerror = ()=>{ URL.revokeObjectURL(url); if(mountedR.current && onDone) onDone(); };
+      audioR.current.play();
     } catch(e) {
       setError(`ElevenLabs: ${e.message}`);
-      const done = audioOnDoneR.current;
-      audioOnDoneR.current = null;
-      if (done) done();
+      if (onDone) onDone();
     }
   };
 
@@ -709,115 +681,59 @@ function VoiceSession({onBack,initialPrompt,elKey,onConfigKey,anthropicKey}) {
     if (!mountedR.current) return;
     setOrb("processing");
 
-    historyR.current = [...historyR.current, {role: "user", content: userMsg}];
+    const prevHistory = historyR.current;
+    const newHistory = [...prevHistory, {role:"user", content:userMsg}];
+    historyR.current = newHistory;
 
     try {
+      if (!anthropicKey) {
+        throw new Error("Add your Anthropic key in Keys before starting a session.");
+      }
+
       const res = await fetch("/anthropic/v1/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
           "x-api-key": anthropicKey,
-          "anthropic-version": "2023-06-01",
-          "anthropic-dangerous-direct-browser-access": "true"
+          "anthropic-version":"2023-06-01",
+          "anthropic-dangerous-direct-browser-access":"true"
         },
         body: JSON.stringify({
-          model: "claude-sonnet-4-5",
-          max_tokens: 300,
+          model:"claude-sonnet-4-20250514",
+          max_tokens:300,
           system: SYSTEM_PROMPT,
-          messages: historyR.current
+          messages: newHistory
         })
       });
-      if (!res.ok) {
-        const errBody = await res.json().catch(() => ({}));
-        throw new Error(`Claude API ${res.status}: ${errBody.error?.message || JSON.stringify(errBody)}`);
-      }
+      if (!res.ok) throw new Error(`Claude API ${res.status}`);
       const data = await res.json();
       const reply = data.content?.[0]?.text || "I'm here. Tell me more.";
 
-      historyR.current = [...historyR.current, {role: "assistant", content: reply}];
-
       const extracted = extractItems(reply);
       if (extracted.length > 0) {
-        setItems(prev => { setNewCount(extracted.length); return [...prev, ...extracted]; });
+        setItems(prev=>{ setNewCount(extracted.length); return [...prev,...extracted]; });
       }
 
-      speak(reply, () => { if (mountedR.current) startListening(); });
+      historyR.current = [...newHistory, {role:"assistant", content:reply}];
+      setHistory(historyR.current);
+
+      speak(reply, ()=>{ if(mountedR.current) startListening(); });
 
     } catch(e) {
+      historyR.current = prevHistory;
       setError(`Claude: ${e.message}`);
       setOrb("idle");
     }
   };
 
-  // ── VAD — runs for the whole session ─────────────
-  // Detects speech/silence to auto-trigger and interrupt
-  const startVAD = () => {
-    if (!analyserR.current) return;
-    const analyser = analyserR.current;
-    const data = new Uint8Array(analyser.frequencyBinCount);
-
-    // Hysteresis: energy must rise above SPEECH to start counting as speech,
-    // and fall below SILENCE to count as silence. The gap between them prevents
-    // chattering when levels hover near the boundary.
-    const SPEECH_THRESHOLD  = 30; // avg energy (0-255) to register as speech
-    const SILENCE_THRESHOLD = 20; // avg energy below which we call it silence
-    // Require ~130 ms of sustained energy before an interruption fires
-    // (~8 frames at 60 fps). Prevents brief noise spikes from interrupting.
-    const INTERRUPT_MIN_FRAMES = 8;
-
-    const tick = () => {
-      if (!mountedR.current) return;
-      vadRafR.current = requestAnimationFrame(tick);
-      analyser.getByteFrequencyData(data);
-      const avg = data.reduce((a, b) => a + b, 0) / data.length;
-
-      if (avg > SPEECH_THRESHOLD) {
-        aboveThresholdFramesR.current++;
-
-        // Interrupt AI: only after sustained speech AND past the 2 s lockout
-        if (
-          orbR.current === "ai-speaking" &&
-          aboveThresholdFramesR.current >= INTERRUPT_MIN_FRAMES &&
-          Date.now() > interruptLockoutR.current
-        ) {
-          stopAudio();
-          if (recognitionR.current) { try { recognitionR.current.abort(); } catch(e) {} recognitionR.current = null; }
-          aboveThresholdFramesR.current = 0;
-          speechDetectedR.current = false;
-          clearTimeout(silenceTimerR.current); silenceTimerR.current = null;
-          transcriptR.current = ""; setTranscript("");
-          setOrb("listening");
-          _startRecognition();
-          return;
-        }
-
-        // User speaking while listening: cancel silence countdown
-        if (orbR.current === "listening") {
-          speechDetectedR.current = true;
-          clearTimeout(silenceTimerR.current); silenceTimerR.current = null;
-        }
-
-      } else if (avg < SILENCE_THRESHOLD) {
-        aboveThresholdFramesR.current = 0;
-
-        // Silence after confirmed speech: start 1.5 s countdown
-        if (orbR.current === "listening" && speechDetectedR.current && !silenceTimerR.current) {
-          silenceTimerR.current = setTimeout(() => {
-            silenceTimerR.current = null;
-            if (mountedR.current && orbR.current === "listening") triggerResponse();
-          }, 1500);
-        }
-      }
-      // Energy between thresholds: hysteresis zone — change nothing
-    };
-
-    vadRafR.current = requestAnimationFrame(tick);
-  };
-
   // ── Web Speech STT ──────────────────────────────
-  const _startRecognition = () => {
+  const startListening = () => {
+    if (!mountedR.current) return;
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) { setError("Speech recognition requires Chrome."); return; }
+    setOrb("listening"); setTranscript("");
+    transcriptR.current = "";
+    clearTimeout(silenceTimerR.current);
     const rec = new SR();
     rec.continuous = true;
     rec.interimResults = true;
@@ -829,9 +745,18 @@ function VoiceSession({onBack,initialPrompt,elKey,onConfigKey,anthropicKey}) {
         if (e.results[i].isFinal) final += e.results[i][0].transcript;
         else interim += e.results[i][0].transcript;
       }
-      const t = (final||interim).trim();
-      transcriptR.current = t;
-      if (mountedR.current) setTranscript(t);
+      if (mountedR.current) {
+        const live = (final || interim).trim();
+        setTranscript(live);
+        transcriptR.current = live;
+
+        if (live) {
+          clearTimeout(silenceTimerR.current);
+          silenceTimerR.current = setTimeout(() => {
+            if (mountedR.current) stopListening();
+          }, SILENCE_MS);
+        }
+      }
     };
     rec.onerror = (e) => {
       if (e.error!=="no-speech" && mountedR.current) setError(`Mic: ${e.error}`);
@@ -839,77 +764,78 @@ function VoiceSession({onBack,initialPrompt,elKey,onConfigKey,anthropicKey}) {
     rec.start();
   };
 
-  const startListening = () => {
-    if (!mountedR.current) return;
-    setOrb("listening");
-    setTranscript(""); transcriptR.current = "";
-    speechDetectedR.current = false;
-    aboveThresholdFramesR.current = 0;
-    clearTimeout(silenceTimerR.current); silenceTimerR.current = null;
-    _startRecognition();
-    // VAD is already running session-wide; just reset state above
-  };
-
-  // Triggered automatically by VAD after 1.5 s silence, or manually by button
-  const triggerResponse = () => {
-    clearTimeout(silenceTimerR.current); silenceTimerR.current = null;
-    if (recognitionR.current) { try { recognitionR.current.stop(); } catch(e) {} recognitionR.current = null; }
+  const stopListening = () => {
+    clearTimeout(silenceTimerR.current);
+    if (recognitionR.current) {
+      try { recognitionR.current.stop(); } catch(e) {}
+      recognitionR.current = null;
+    }
     const said = transcriptR.current.trim();
-    setTranscript(""); transcriptR.current = "";
-    speechDetectedR.current = false;
-    aboveThresholdFramesR.current = 0;
-    if (!said) { startListening(); return; }
+    setTranscript("");
+    transcriptR.current = "";
+    if (!isMeaningfulUtterance(said)) { startListening(); return; }
     askClaude(said);
   };
 
-  const stopListening = () => triggerResponse();
+  const interruptAndListen = () => {
+    clearTimeout(silenceTimerR.current);
+    if (audioR.current) {
+      audioR.current.pause();
+      audioR.current = null;
+    }
+    window.speechSynthesis.cancel();
+    startListening();
+  };
 
   // ── Begin session ───────────────────────────────
-  const begin = async () => {
+  const begin = () => {
     setStarted(true);
     timerR.current = setInterval(()=>{ if(mountedR.current) setElapsed(t=>t+1); },1000);
-    const opening = `Hey, have a specific place you want to start, or would you like me to ask you a question to get things going?\n\nEXTRACT:{"items":[]}`;
-
-    historyR.current = [];
-
-    // Init AudioContext and mic stream for VAD (runs for the whole session)
-    try {
-      if (!audioCtxR.current) audioCtxR.current = new AudioContext();
-      const stream = await navigator.mediaDevices.getUserMedia({
-        audio: {echoCancellation:true, noiseSuppression:true},
-        video: false
-      });
-      micStreamR.current = stream;
-      const src = audioCtxR.current.createMediaStreamSource(stream);
-      const analyser = audioCtxR.current.createAnalyser();
-      analyser.fftSize = 512;
-      analyser.smoothingTimeConstant = 0.3;
-      src.connect(analyser); // NOT connected to destination — no mic feedback
-      analyserR.current = analyser;
-      startVAD();
-    } catch(e) {
-      setError("Microphone access is required for voice detection.");
-    }
-
+    const opening = initialPrompt
+      ? `I'd like to ask you something. ${initialPrompt} Take your time.\n\nEXTRACT:{"items":[]}`
+      : `Hey, have a specific place you want to start, or would you like me to ask you a question to get things going?\n\nEXTRACT:{"items":[]}`;
+    historyR.current = [
+      {role:"user", content:"Hello"},
+      {role:"assistant", content:opening}
+    ];
+    setHistory(historyR.current);
     speak(opening, ()=>{ if(mountedR.current) startListening(); });
   };
 
-
   const isL = orb==="listening", isA = orb==="ai-speaking", isP = orb==="processing";
 
+  // Sound wave bars — 12 bars, each animated with staggered delay
+  const WaveBar = ({i, active, color}) => (
+    <div style={{
+      width:3, minHeight:4, maxHeight:28, height:active ? `${8+Math.sin(i*0.8)*10+10}px` : "5px",
+      background: color, borderRadius:3, flexShrink:0, opacity: active ? 0.85 : 0.25,
+      animation: active ? `lp-breathe ${0.8+i*0.07}s ease-in-out ${i*0.06}s infinite` : "none",
+      transition:"height 0.3s ease, opacity 0.3s",
+      transformOrigin:"bottom"
+    }}/>
+  );
+
+  const SoundWave = ({active, color, bars=14}) => (
+    <div style={{display:"flex",alignItems:"center",gap:3,height:32}}>
+      {Array.from({length:bars},(_,i)=>(
+        <WaveBar key={i} i={i} active={active} color={color}/>
+      ))}
+    </div>
+  );
+
   return (
-    <div style={{flex:1,display:"flex",flexDirection:"column",overflow:"hidden",background:C.bg}}>
-      {/* Header */}
-      <div style={{padding:"8px 20px",background:C.surface,borderBottom:`1px solid ${C.border}`,
+    <div style={{flex:1,display:"flex",flexDirection:"column",overflow:"hidden",background:C.bg,fontFamily:FONTS.sans}}>
+      {/* Session Header */}
+      <div style={{padding:"10px 20px",background:C.surface,borderBottom:`1px solid ${C.border}`,
         display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0}}>
-        <button onClick={onBack} style={{background:"none",border:"none",fontSize:12,color:C.textDim,fontFamily:"sans-serif",cursor:"pointer"}}>← Back</button>
-        <div style={{fontSize:11,color:C.textDim,fontFamily:"sans-serif"}}>{started?fmt(elapsed):"Session"}</div>
+        <button onClick={onBack} style={{background:"none",border:"none",fontSize:13,color:C.textDim,fontFamily:FONTS.sans,cursor:"pointer",letterSpacing:"0.02em"}}>← Back</button>
+        <div style={{fontSize:11,color:C.textDim,fontFamily:FONTS.mono}}>{started?fmt(elapsed):"Session"}</div>
         <div style={{display:"flex",alignItems:"center",gap:8}}>
           <button onClick={onConfigKey} style={{background:"none",border:"none",cursor:"pointer",
-            fontSize:9,color:elKey?C.green:C.textDim,fontFamily:"sans-serif",letterSpacing:"0.06em"}}>
+            fontSize:9,color:elKey?C.green:C.textDim,fontFamily:FONTS.mono}}>
             {elKey?"● EL":"○ Voice"}
           </button>
-          <div style={{fontSize:11,fontFamily:"sans-serif",fontWeight:500,
+          <div style={{fontSize:11,fontFamily:FONTS.sans,fontWeight:500,letterSpacing:"0.04em",
             color:isL?C.green:isA?C.teal:isP?C.amber:C.textDim}}>
             {isA?"Speaking":isL?"Listening":isP?"Thinking":"—"}
           </div>
@@ -918,10 +844,10 @@ function VoiceSession({onBack,initialPrompt,elKey,onConfigKey,anthropicKey}) {
 
       {/* Error banner */}
       {error && (
-        <div style={{padding:"8px 16px",background:"#fef2f2",borderBottom:`1px solid #fecaca`,
-          fontSize:11,color:"#dc2626",fontFamily:"sans-serif",display:"flex",justifyContent:"space-between"}}>
+        <div style={{padding:"8px 16px",background:C.dangerBg,borderBottom:`1px solid ${C.danger}`,
+          fontSize:11,color:C.danger,fontFamily:FONTS.sans,display:"flex",justifyContent:"space-between"}}>
           <span>{error}</span>
-          <button onClick={()=>setError(null)} style={{background:"none",border:"none",color:"#dc2626",cursor:"pointer",fontSize:13}}>×</button>
+          <button onClick={()=>setError(null)} style={{background:"none",border:"none",color:C.danger,cursor:"pointer",fontSize:13}}>×</button>
         </div>
       )}
 
@@ -930,37 +856,35 @@ function VoiceSession({onBack,initialPrompt,elKey,onConfigKey,anthropicKey}) {
         <div style={{padding:"4px 16px",background:C.bg,borderBottom:`1px solid ${C.border}`,
           display:"flex",alignItems:"center",gap:5,flexShrink:0}}>
           <div style={{width:5,height:5,borderRadius:"50%",background:elKey?C.green:C.amber}}/>
-          <span style={{fontSize:9,color:C.textDim,fontFamily:"sans-serif",letterSpacing:"0.06em"}}>
+          <span style={{fontSize:9,color:C.textDim,fontFamily:FONTS.sans,letterSpacing:"0.06em"}}>
             {elKey?"ElevenLabs · Rachel":"Browser TTS — add ElevenLabs key for better voice"}
           </span>
         </div>
       )}
 
       {!started ? (
-        <div style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"40px 32px"}}>
-          <div style={{fontSize:20,color:C.navy,fontWeight:300,textAlign:"center",lineHeight:1.4,marginBottom:12,fontFamily:"'Helvetica Neue',sans-serif"}}>
-            A place to speak plainly
+        <div style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"40px 32px",gap:0,background:C.surface}}>
+          <div style={{width:80,height:80,borderRadius:"50%",background:C.tealSoft,display:"flex",alignItems:"center",justifyContent:"center",marginBottom:28}}>
+            <SoundWave active={false} color={C.teal} bars={9}/>
           </div>
-          <div style={{fontSize:13,color:C.textMuted,textAlign:"center",lineHeight:1.7,marginBottom:36,fontFamily:"sans-serif"}}>
-            Your voice, your experience, your record.<br/>
-            <span style={{fontSize:11,color:C.textDim}}>Use Chrome for voice input.</span>
+          <div style={{fontSize:26,color:C.navy,fontWeight:700,textAlign:"center",lineHeight:1.25,marginBottom:10,fontFamily:FONTS.sans,letterSpacing:"-0.02em"}}>
+            Start a session
           </div>
-          <div style={{position:"relative",width:90,height:90,display:"flex",alignItems:"center",justifyContent:"center",marginBottom:36}}>
-            {[90,68].map((sz,i)=>(
-              <div key={i} style={{position:"absolute",width:sz,height:sz,borderRadius:"50%",border:`1px solid ${C.borderMid}`,opacity:0.2+i*0.05}}/>
-            ))}
-            <div style={{width:52,height:52,borderRadius:"50%",background:C.navySoft,border:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,color:C.textDim}}>○</div>
+          <div style={{fontSize:14,color:C.textMuted,textAlign:"center",lineHeight:1.7,marginBottom:40,fontFamily:FONTS.sans,maxWidth:240}}>
+            Speak plainly — your experience, what you're feeling, what's shifted.
+            <br/><span style={{fontSize:12,color:C.textDim,marginTop:4,display:"block"}}>Requires Chrome.</span>
           </div>
-          <button onClick={begin} style={{background:C.navySoft,border:`1px solid ${C.navy}44`,color:C.navy,padding:"14px 36px",borderRadius:28,fontSize:14,cursor:"pointer",fontFamily:"sans-serif",fontWeight:500}}>
+          <button onClick={begin} className="lp-btn-primary" style={{padding:"15px 48px",fontSize:15}}>
             Begin session
           </button>
         </div>
       ) : (
         <div style={{flex:1,display:"flex",flexDirection:"column",overflow:"hidden"}}>
-          {/* AI response text */}
-          <div style={{padding:"18px 24px 12px",flexShrink:0}}>
-            <div style={{fontSize:9,letterSpacing:"0.14em",textTransform:"uppercase",color:C.textDim,fontFamily:"sans-serif",marginBottom:8}}>LymePath</div>
-            <div style={{fontSize:14,lineHeight:1.8,color:C.text,minHeight:72,fontFamily:"Georgia,serif"}}>
+
+          {/* AI voice area — editorial, progressive */}
+          <div style={{padding:"20px 24px 0",flexShrink:0,minHeight:120}}>
+            <div style={{fontSize:11,letterSpacing:"0.04em",textTransform:"uppercase",color:C.teal,fontFamily:FONTS.sans,fontWeight:600,marginBottom:12}}>LymePath</div>
+            <div key={aiText.slice(0,20)} className="lp-session-text" style={{fontSize:16,lineHeight:1.8,color:C.text,fontFamily:FONTS.sans,fontWeight:400,minHeight:64}}>
               {aiText.split("\n").map((l,i,arr)=>(
                 <span key={i}>{l}{i<arr.length-1&&<><br/><br/></>}</span>
               ))}
@@ -968,71 +892,79 @@ function VoiceSession({onBack,initialPrompt,elKey,onConfigKey,anthropicKey}) {
             </div>
           </div>
 
-          {/* Orb */}
-          <div style={{display:"flex",flexDirection:"column",alignItems:"center",padding:"4px 0 10px",gap:10,flexShrink:0}}>
-            <div style={{position:"relative",width:80,height:80,display:"flex",alignItems:"center",justifyContent:"center"}}>
-              {[80,60].map((sz,i)=>(
-                <div key={i} style={{position:"absolute",width:sz,height:sz,borderRadius:"50%",
-                  border:`1px solid ${isL?C.teal:isA?C.navy:C.borderMid}`,
-                  opacity:(isL||isA)?0.4-i*0.12:0.1,
-                  animation:isL?`pulse ${1.2+i*0.4}s ease-in-out infinite`:"none"}}/>
-              ))}
-              <div style={{width:48,height:48,borderRadius:"50%",
-                background:isL?`radial-gradient(circle,${C.tealSoft},${C.bg})`:isA?`radial-gradient(circle,${C.navySoft},${C.bg})`:C.bg,
-                border:`1px solid ${isL?C.teal:isA?C.navy:C.border}`,
-                display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.4s"}}>
-                {isP
-                  ? <div style={{width:16,height:16,border:`2px solid ${C.borderMid}`,borderTop:`2px solid ${C.navy}`,borderRadius:"50%",animation:"spin 0.8s linear infinite"}}/>
-                  : <span style={{fontSize:16,opacity:isL||isA?1:0.3,color:isL?C.teal:C.navy}}>{isL?"◉":isA?"◈":"○"}</span>
-                }
-              </div>
+          {/* Sound wave + state center */}
+          <div style={{display:"flex",flexDirection:"column",alignItems:"center",padding:"16px 0 12px",gap:8,flexShrink:0}}>
+
+            {/* Wave display */}
+            <div style={{position:"relative",display:"flex",alignItems:"center",justifyContent:"center",height:40}}>
+              {isP ? (
+                <div style={{width:20,height:20,border:`2px solid ${C.borderMid}`,borderTop:`2px solid ${C.navy}`,borderRadius:"50%",animation:"spin 0.8s linear infinite"}}/>
+              ) : (
+                <SoundWave active={isL||isA} color={isL?C.green:isA?C.teal:C.textDim} bars={16}/>
+              )}
+              {/* Pulse ring when listening */}
+              {isL && (
+                <div style={{position:"absolute",inset:-12,borderRadius:"50%",border:`1px solid ${C.green}`,opacity:0,animation:"lp-pulse-ring 1.8s ease-out infinite"}}/>
+              )}
             </div>
 
-            {/* Live transcript */}
-            {isL && (
-              <div style={{fontSize:12,color:C.textMuted,fontStyle:"italic",textAlign:"center",
-                maxWidth:240,lineHeight:1.6,minHeight:30,fontFamily:"Georgia,serif",padding:"0 20px"}}>
-                {transcript || <span style={{color:C.textDim}}>Listening…</span>}
-              </div>
-            )}
+            {/* Live transcript — italic, fading in */}
+            <div style={{fontSize:13,color:C.textMuted,fontStyle:"italic",fontFamily:FONTS.sans,
+              textAlign:"center",maxWidth:260,lineHeight:1.7,minHeight:22,padding:"0 20px",
+              opacity:isL?1:0,transition:"opacity 0.3s"}}>
+              {transcript || (isL ? <span style={{color:C.textDim}}>Listening…</span> : null)}
+            </div>
 
-            {/* Done button */}
+            {/* Status line */}
+            <div style={{fontSize:10,color:C.textDim,fontFamily:FONTS.mono,
+              opacity: isL||isA||isP ? 0 : 0.6}}>
+              Auto-sends after {SILENCE_MS/1000}s of silence
+            </div>
+
+            {/* Action buttons — only shown when needed */}
             {isL && (
-              <button onClick={stopListening}
-                style={{background:C.tealSoft,border:`1px solid ${C.teal}`,color:C.teal,
-                  padding:"8px 24px",borderRadius:22,fontSize:13,cursor:"pointer",fontFamily:"sans-serif"}}>
-                Done speaking
+              <button onClick={stopListening} className="lp-btn-ghost" style={{padding:"7px 20px",fontSize:12}}>
+                Send now
+              </button>
+            )}
+            {isA && (
+              <button onClick={interruptAndListen} className="lp-btn-ghost" style={{padding:"7px 20px",fontSize:12,color:C.teal,borderColor:C.tealSoft}}>
+                Interrupt
               </button>
             )}
           </div>
 
-          {/* Record panel */}
-          <div style={{flex:1,overflow:"hidden",borderTop:`1px solid ${C.border}`,background:C.surface,display:"flex",flexDirection:"column"}}>
-            <div style={{padding:"7px 16px 4px",display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0}}>
-              <div style={{fontSize:9,letterSpacing:"0.12em",textTransform:"uppercase",color:C.textDim,fontFamily:"sans-serif"}}>Building your record</div>
+          {/* Record panel — progressive reveal */}
+          <div style={{flex:1,overflow:"hidden",borderTop:`1px solid ${C.border}`,background:C.surface,display:"flex",flexDirection:"column",
+            opacity: items.length>0 ? 1 : 0.4, transition:"opacity 0.5s"}}>
+            <div style={{padding:"10px 16px 6px",display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0}}>
+              <div style={{fontSize:11,fontWeight:600,color:C.textMuted,fontFamily:FONTS.sans}}>
+                {items.length>0 ? `Your record — ${items.length} item${items.length===1?"":"s"}` : "Your record"}
+              </div>
               <div style={{display:"flex",gap:4}}>
-                {Object.entries(TAG_C).map(([type,s])=>(
-                  <span key={type} style={{fontSize:8,padding:"1px 6px",background:s.bg,color:s.text,borderRadius:8,fontFamily:"sans-serif"}}>{type}</span>
+                {Object.entries(TAG_C).slice(0,3).map(([type,s])=>(
+                  <span key={type} className="lp-tag" style={{background:s.bg,color:s.text}}>{type}</span>
                 ))}
               </div>
             </div>
-            <div style={{flex:1,overflowY:"auto",padding:"4px 10px 14px"}}>
-              {items.length===0
-                ? <div style={{padding:14,fontSize:12,color:C.textDim,fontStyle:"italic",lineHeight:1.7,textAlign:"center",fontFamily:"sans-serif"}}>As you speak, what matters will take shape here.</div>
-                : items.map((item,i)=>{
-                    const s = TAG_C[item.type]||TAG_C.symptom;
-                    const isNew = i>=items.length-newCount;
-                    return (
-                      <div key={i} style={{display:"flex",alignItems:"flex-start",gap:8,padding:"7px 10px",
-                        background:isNew?s.bg:"transparent",
-                        borderLeft:`2px solid ${isNew?s.dot:C.border}`,
-                        borderRadius:"0 6px 6px 0",marginBottom:2}}>
-                        <div style={{width:5,height:5,borderRadius:"50%",background:s.dot,marginTop:5,flexShrink:0}}/>
-                        <div style={{fontSize:11,color:s.text,lineHeight:1.5,fontFamily:"sans-serif"}}>{item.text}</div>
-                      </div>
-                    );
-                  })
-              }
+            <div style={{flex:1,overflowY:"auto",padding:"4px 14px 16px"}}>
+              {items.length===0 ? (
+                <div style={{padding:"16px 0",fontSize:13,color:C.textDim,lineHeight:1.8,textAlign:"center",fontFamily:FONTS.sans}}>
+                  As you speak, what matters<br/>will take shape here.
+                </div>
+              ) : items.map((item,i)=>{
+                const s = TAG_C[item.type]||TAG_C.symptom;
+                const isNew = i>=items.length-newCount;
+                return (
+                  <div key={i} className={isNew?"lp-record-item":""} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"9px 12px",
+                    background:isNew?s.bg:"transparent",
+                    borderLeft:`2px solid ${isNew?s.dot:C.border}`,
+                    borderRadius:"0 8px 8px 0",marginBottom:3,transition:"background 0.5s"}}>
+                    <div style={{width:5,height:5,borderRadius:"50%",background:s.dot,marginTop:6,flexShrink:0}}/>
+                    <div style={{fontSize:12,color:isNew?s.text:C.textMuted,lineHeight:1.6,fontFamily:FONTS.sans}}>{item.text}</div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -1061,16 +993,16 @@ function MyRecord({onVoice}) {
         </div>
         <div style={{display:"flex",gap:5,flexWrap:"wrap",marginBottom:coOpen?10:0}}>
           {COINFECTIONS.map(ci=>(
-            <span key={ci.key} style={{fontSize:9,padding:"3px 8px",borderRadius:10,fontFamily:"sans-serif",
-              background:ci.positive?ci.color+"22":ci.tested?C.steelSoft:C.bg,
+            <span key={ci.key} style={{fontSize:9,padding:"3px 8px",borderRadius:10,fontFamily:FONTS.sans,
+              background:ci.positive?C.navySoft:ci.tested?C.steelSoft:C.bg,
               color:ci.positive?ci.color:ci.tested?C.steel:C.textDim,
-              border:`1px solid ${ci.positive?ci.color+"44":C.border}`}}>
+              border:`1px solid ${ci.positive?"var(--lp-border-strong)":C.border}`}}>
               {ci.label}{ci.positive?" +":ci.tested?" −":" ?"}
             </span>
           ))}
         </div>
         {coOpen && (
-          <div style={{fontSize:11,color:C.textDim,fontFamily:"sans-serif",lineHeight:1.65,
+          <div style={{fontSize:11,color:C.textDim,fontFamily:FONTS.sans,lineHeight:1.65,
             padding:"10px 12px",background:C.bg,borderRadius:10,borderLeft:`3px solid ${C.amber}`}}>
             Babesia and Mycoplasma are confirmed. Bartonella tested negative. Ehrlichia and Anaplasma untested — this limits interpretation of some symptom patterns.
           </div>
@@ -1088,12 +1020,12 @@ function MyRecord({onVoice}) {
             {label:"Air quality",value:"Moderate",color:C.green},
           ].map(s=>(
             <div key={s.label} style={{background:C.bg,borderRadius:10,padding:"9px 11px"}}>
-              <div style={{fontSize:9,color:C.textDim,fontFamily:"sans-serif",letterSpacing:"0.08em",textTransform:"uppercase",marginBottom:3}}>{s.label}</div>
-              <div style={{fontSize:13,fontWeight:600,color:s.color,fontFamily:"sans-serif"}}>{s.value}</div>
+              <div style={{fontSize:9,color:C.textDim,fontFamily:FONTS.sans,letterSpacing:"0.08em",textTransform:"uppercase",marginBottom:3}}>{s.label}</div>
+              <div style={{fontSize:13,fontWeight:600,color:s.color,fontFamily:FONTS.sans}}>{s.value}</div>
             </div>
           ))}
         </div>
-        <div style={{fontSize:11,color:C.textDim,fontFamily:"sans-serif",lineHeight:1.6,padding:"8px 10px",background:C.amberSoft,borderRadius:10,borderLeft:`3px solid ${C.amber}`}}>
+        <div style={{fontSize:11,color:C.textDim,fontFamily:FONTS.sans,lineHeight:1.6,padding:"8px 10px",background:C.amberSoft,borderRadius:10,borderLeft:`3px solid ${C.amber}`}}>
           High altitude may affect oxygenation and fatigue presentation. Seasonal smoke correlates with your worst months in the pattern view.
         </div>
       </Card>
@@ -1107,7 +1039,7 @@ function MyRecord({onVoice}) {
             return (
               <button key={k} onClick={()=>toggle(k)} style={{display:"flex",alignItems:"center",gap:4,
                 padding:"3px 9px",borderRadius:16,border:`1.5px solid ${on?v.color:C.border}`,
-                background:on?C.surface:C.bg,cursor:"pointer",fontFamily:"sans-serif",
+                background:on?C.surface:C.bg,cursor:"pointer",fontFamily:FONTS.sans,
                 opacity:on?1:0.38,transition:"all 0.2s"}}>
                 <div style={{width:6,height:6,borderRadius:"50%",background:v.color}}/>
                 <span style={{fontSize:10,color:on?v.color:C.textDim,fontWeight:500}}>{v.label}</span>
@@ -1118,14 +1050,14 @@ function MyRecord({onVoice}) {
         <ResponsiveContainer width="100%" height={140}>
           <AreaChart data={TREND_DATA} margin={{top:4,right:8,bottom:0,left:-24}}>
             <Grads/>
-            <XAxis dataKey="w" tick={{fill:C.textDim,fontSize:9,fontFamily:"sans-serif"}} axisLine={false} tickLine={false}/>
-            <YAxis domain={[0,10]} tick={{fill:C.textDim,fontSize:9,fontFamily:"sans-serif"}} axisLine={false} tickLine={false}/>
+            <XAxis dataKey="w" tick={{fill:C.graphAxes,fontSize:9,fontFamily:FONTS.sans}} axisLine={false} tickLine={false}/>
+            <YAxis domain={[0,10]} tick={{fill:C.graphAxes,fontSize:9,fontFamily:FONTS.sans}} axisLine={false} tickLine={false}/>
             <Tooltip content={<Tip/>}/>
             {TIMELINE.filter(e=>e.type==="treatment"||e.type==="flare").map(e=>(
-              <ReferenceLine key={e.w+e.label} x={e.w} stroke={e.color} strokeDasharray="3 3" strokeOpacity={0.4} strokeWidth={1.5}/>
+              <ReferenceLine key={e.w+e.label} x={e.w} stroke={e.color} strokeDasharray="3 3" strokeOpacity={0.15} strokeWidth={1.5}/>
             ))}
             {Object.entries(SYMS).map(([k,v])=>active.includes(k)&&(
-              <Area key={k} type="monotone" dataKey={k} name={v.label} stroke={v.color} strokeWidth={2} fill={`url(#g_${k})`} dot={false} activeDot={{r:4,fill:v.color,stroke:"white",strokeWidth:2}}/>
+              <Area key={k} type="monotone" dataKey={k} name={v.label} stroke={v.color} strokeWidth={2.5} fill={`url(#g_${k})`} dot={false} activeDot={{r:4,fill:v.color,stroke:C.onDark,strokeWidth:2}}/>
             ))}
           </AreaChart>
         </ResponsiveContainer>
@@ -1136,18 +1068,29 @@ function MyRecord({onVoice}) {
         <Label sub="12 weeks">Timeline</Label>
         <div style={{position:"relative",paddingLeft:18}}>
           <div style={{position:"absolute",left:5,top:8,bottom:8,width:1.5,background:`linear-gradient(to bottom,${C.navy},${C.gold})`,opacity:0.25}}/>
-          {TIMELINE.map((e,i)=>(
-            <div key={i} style={{display:"flex",alignItems:"flex-start",gap:12,marginBottom:i<TIMELINE.length-1?12:0}}>
+          {TIMELINE.map((e,i)=>{
+            const isRecent = e.w === "W12";
+            return (
+            <div
+              key={i}
+              className={isRecent ? "recent-activity-indicator" : ""}
+              style={{display:"flex",alignItems:"flex-start",gap:12,marginBottom:i<TIMELINE.length-1?12:0}}
+            >
               <div style={{width:9,height:9,borderRadius:"50%",background:e.color,flexShrink:0,marginTop:3,
                 boxShadow:`0 0 0 2px ${C.surface},0 0 0 3.5px ${e.color}44`,
                 position:"relative",left:-13,marginRight:-13}}/>
               <div style={{flex:1}}>
-                <span style={{fontSize:10,color:C.textDim,fontFamily:"sans-serif"}}>Week {e.w.replace("W","")}</span>
+                <span style={{fontSize:10,color:C.textDim,fontFamily:FONTS.sans}}>Week {e.w.replace("W","")}</span>
+                {isRecent && (
+                  <span style={{fontSize:9,color:C.teal,fontFamily:FONTS.sans,fontWeight:600,letterSpacing:"0.04em",marginLeft:6}}>
+                    Recent
+                  </span>
+                )}
                 <span style={{fontSize:10,color:C.borderMid,margin:"0 5px"}}>·</span>
-                <span style={{fontSize:12,color:e.type==="milestone"?e.color:C.textMuted,fontFamily:"sans-serif",fontWeight:e.type==="milestone"?"600":"400"}}>{e.label}</span>
+                <span style={{fontSize:12,color:e.type==="milestone"?e.color:C.textMuted,fontFamily:FONTS.sans,fontWeight:e.type==="milestone"?"600":"400"}}>{e.label}</span>
               </div>
             </div>
-          ))}
+          )})}
         </div>
       </Card>
 
@@ -1156,7 +1099,7 @@ function MyRecord({onVoice}) {
         <Label sub="Most frequent across 18 sessions">Your language</Label>
         <div style={{display:"flex",gap:5,flexWrap:"wrap",marginBottom:10}}>
           {Object.entries(WORD_C).map(([type,s])=>(
-            <span key={type} style={{fontSize:9,padding:"2px 8px",borderRadius:10,background:s.bg,color:s.color,fontFamily:"sans-serif",letterSpacing:"0.06em",textTransform:"uppercase",fontWeight:500}}>{type}</span>
+            <span key={type} style={{fontSize:9,padding:"2px 8px",borderRadius:10,background:s.bg,color:s.color,fontFamily:FONTS.sans,letterSpacing:"0.06em",textTransform:"uppercase",fontWeight:500}}>{type}</span>
           ))}
         </div>
         <div style={{display:"flex",flexDirection:"column",gap:7}}>
@@ -1165,11 +1108,11 @@ function MyRecord({onVoice}) {
             const s = WORD_C[w.type];
             return (
               <div key={w.text} style={{display:"flex",alignItems:"center",gap:8}}>
-                <div style={{width:76,textAlign:"right",flexShrink:0,fontSize:12,color:C.textMuted,fontFamily:"Georgia,serif",fontStyle:"italic"}}>{w.text}</div>
+                <div style={{width:76,textAlign:"right",flexShrink:0,fontSize:12,color:C.textMuted,fontFamily:FONTS.sans,fontStyle:"italic"}}>{w.text}</div>
                 <div style={{flex:1,height:10,background:C.bg,borderRadius:5,overflow:"hidden"}}>
                   <div style={{width:`${pct}%`,height:"100%",background:`linear-gradient(90deg,${s.color}77,${s.color})`,borderRadius:5}}/>
                 </div>
-                <div style={{width:24,textAlign:"right",flexShrink:0,fontSize:10,color:C.textDim,fontFamily:"sans-serif"}}>{w.count}</div>
+                <div style={{width:24,textAlign:"right",flexShrink:0,fontSize:10,color:C.textDim,fontFamily:FONTS.sans}}>{w.count}</div>
                 <div style={{width:8,height:8,borderRadius:"50%",background:s.color,flexShrink:0}}/>
               </div>
             );
@@ -1179,11 +1122,11 @@ function MyRecord({onVoice}) {
 
       {/* Insights */}
       <div style={{marginBottom:6}}>
-        <div style={{fontSize:10,letterSpacing:"0.12em",textTransform:"uppercase",color:C.textDim,fontFamily:"sans-serif",marginBottom:8,paddingLeft:2}}>Insights from your record</div>
+        <div style={{fontSize:10,letterSpacing:"0.12em",textTransform:"uppercase",color:C.textDim,fontFamily:FONTS.sans,marginBottom:8,paddingLeft:2}}>Insights from your record</div>
         {INSIGHTS.map(ins=>(
           <div key={ins.id} style={{background:ins.bg,borderRadius:14,padding:"12px 14px",marginBottom:8,borderLeft:`3px solid ${ins.color}`}}>
             <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}>
-              <div style={{fontSize:12,color:C.textMuted,fontFamily:"Georgia,serif",fontStyle:"italic",lineHeight:1.55,flex:1}}>"{ins.q}"</div>
+              <div style={{fontSize:12,color:C.textMuted,fontFamily:FONTS.sans,fontStyle:"italic",lineHeight:1.55,flex:1}}>"{ins.q}"</div>
               <VBtn onClick={()=>onVoice(ins.q)} label="Respond"/>
             </div>
           </div>
@@ -1212,7 +1155,7 @@ function Protocol({onVoice}) {
             return (
               <button key={k} onClick={()=>toggleO(k)} style={{display:"flex",alignItems:"center",gap:4,
                 padding:"3px 9px",borderRadius:16,border:`1.5px solid ${on?v.color:C.border}`,
-                background:on?C.surface:C.bg,cursor:"pointer",fontFamily:"sans-serif",opacity:on?1:0.38,transition:"all 0.2s"}}>
+                background:on?C.surface:C.bg,cursor:"pointer",fontFamily:FONTS.sans,opacity:on?1:0.38,transition:"all 0.2s"}}>
                 <div style={{width:6,height:6,borderRadius:"50%",background:v.color}}/>
                 <span style={{fontSize:10,color:on?v.color:C.textDim,fontWeight:500}}>{v.label}</span>
               </button>
@@ -1222,14 +1165,14 @@ function Protocol({onVoice}) {
         <ResponsiveContainer width="100%" height={130}>
           <AreaChart data={TREND_DATA} margin={{top:4,right:8,bottom:0,left:-24}}>
             <Grads/>
-            <XAxis dataKey="w" tick={{fill:C.textDim,fontSize:9,fontFamily:"sans-serif"}} axisLine={false} tickLine={false}/>
-            <YAxis tick={{fill:C.textDim,fontSize:9,fontFamily:"sans-serif"}} axisLine={false} tickLine={false}/>
+            <XAxis dataKey="w" tick={{fill:C.graphAxes,fontSize:9,fontFamily:FONTS.sans}} axisLine={false} tickLine={false}/>
+            <YAxis tick={{fill:C.graphAxes,fontSize:9,fontFamily:FONTS.sans}} axisLine={false} tickLine={false}/>
             <Tooltip content={<Tip/>}/>
             {TIMELINE.filter(e=>e.type==="treatment").map(e=>(
               <ReferenceLine key={e.w+e.label} x={e.w} stroke={C.borderMid} strokeDasharray="4 3" strokeWidth={1}/>
             ))}
             {Object.entries(SYMS).map(([k,v])=>overlays.includes(k)&&(
-              <Area key={k} type="monotone" dataKey={k} name={v.label} stroke={v.color} strokeWidth={1.5} fill={`url(#g_${k})`} dot={false} activeDot={{r:3,fill:v.color}}/>
+              <Area key={k} type="monotone" dataKey={k} name={v.label} stroke={v.color} strokeWidth={2} fill={`url(#g_${k})`} dot={false} activeDot={{r:3,fill:v.color}}/>
             ))}
           </AreaChart>
         </ResponsiveContainer>
@@ -1237,7 +1180,7 @@ function Protocol({onVoice}) {
 
       <div style={{padding:"11px 14px",marginBottom:14,background:C.surface,borderRadius:12,
         border:`1px solid ${C.border}`,borderLeft:`3px solid ${C.gold}`,
-        fontSize:11,color:C.textDim,lineHeight:1.65,fontFamily:"Georgia,serif",fontStyle:"italic"}}>
+        fontSize:11,color:C.textDim,lineHeight:1.65,fontFamily:FONTS.sans,fontStyle:"italic"}}>
         Your protocol is yours. What follows is a scientific lens — current evidence, where the gaps are, and how others with similar profiles have used it. No verdicts.
       </div>
 
@@ -1248,10 +1191,10 @@ function Protocol({onVoice}) {
             <div onClick={()=>setExpanded(open?null:item.id)} style={{padding:"13px 16px",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"space-between",background:open?item.bg:C.surface,transition:"background 0.2s"}}>
               <div style={{flex:1}}>
                 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:3}}>
-                  <span style={{fontSize:13,fontWeight:600,color:C.text,fontFamily:"'Helvetica Neue',sans-serif"}}>{item.name}</span>
-                  <span style={{fontSize:9,padding:"2px 7px",borderRadius:8,background:item.bg,color:item.color,fontFamily:"sans-serif"}}>{item.cat}</span>
+                  <span style={{fontSize:13,fontWeight:600,color:C.text,fontFamily:FONTS.sans}}>{item.name}</span>
+                  <span style={{fontSize:9,padding:"2px 7px",borderRadius:8,background:item.bg,color:item.color,fontFamily:FONTS.sans}}>{item.cat}</span>
                 </div>
-                <div style={{fontSize:11,color:C.textDim,fontFamily:"sans-serif"}}>{item.dose} · {item.weeks}</div>
+                <div style={{fontSize:11,color:C.textDim,fontFamily:FONTS.sans}}>{item.dose} · {item.weeks}</div>
               </div>
               <div style={{display:"flex",alignItems:"center",gap:8}}>
                 <EvidenceBadge label={item.evidence} color={item.evColor} bg={item.evBg}/>
@@ -1261,22 +1204,22 @@ function Protocol({onVoice}) {
             {open && (
               <div style={{padding:"0 16px 16px",background:C.surface}}>
                 <div style={{padding:"10px 12px",background:C.bg,borderRadius:10,marginBottom:10,marginTop:4}}>
-                  <div style={{fontSize:9,letterSpacing:"0.1em",textTransform:"uppercase",color:C.textDim,fontFamily:"sans-serif",marginBottom:6}}>Scientific lens</div>
-                  <div style={{fontSize:11,color:C.textDim,lineHeight:1.65,fontFamily:"Georgia,serif",fontStyle:"italic",borderLeft:`2px solid ${C.borderMid}`,paddingLeft:10}}>{item.note}</div>
+                  <div style={{fontSize:9,letterSpacing:"0.1em",textTransform:"uppercase",color:C.textDim,fontFamily:FONTS.sans,marginBottom:6}}>Scientific lens</div>
+                  <div style={{fontSize:11,color:C.textDim,lineHeight:1.65,fontFamily:FONTS.sans,fontStyle:"italic",borderLeft:`2px solid ${C.borderMid}`,paddingLeft:10}}>{item.note}</div>
                 </div>
                 <div style={{marginBottom:10}}>
                   {item.links.map((lnk,i)=>(
                     <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"8px 10px",background:C.bg,borderRadius:8,cursor:"pointer",border:`1px solid ${C.border}`,marginBottom:4}}>
-                      <span style={{fontSize:8,padding:"1px 6px",borderRadius:6,background:C.surface,color:LINK_C[lnk.t]||C.steel,border:`1px solid ${C.border}`,fontFamily:"sans-serif",letterSpacing:"0.06em",textTransform:"uppercase",flexShrink:0,fontWeight:600}}>{lnk.t}</span>
-                      <span style={{fontSize:11,color:item.color,fontFamily:"sans-serif",flex:1,lineHeight:1.4}}>{lnk.l}</span>
+                      <span style={{fontSize:8,padding:"1px 6px",borderRadius:6,background:C.surface,color:LINK_C[lnk.t]||C.steel,border:`1px solid ${C.border}`,fontFamily:FONTS.sans,letterSpacing:"0.06em",textTransform:"uppercase",flexShrink:0,fontWeight:600}}>{lnk.t}</span>
+                      <span style={{fontSize:11,color:item.color,fontFamily:FONTS.sans,flex:1,lineHeight:1.4}}>{lnk.l}</span>
                       <span style={{fontSize:11,color:C.textDim}}>→</span>
                     </div>
                   ))}
                 </div>
                 <div style={{padding:"10px 12px",background:`linear-gradient(135deg,${item.bg},${C.surface})`,borderRadius:10,border:`1px solid ${C.border}`,display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:10}}>
                   <div style={{flex:1}}>
-                    <div style={{fontSize:9,letterSpacing:"0.1em",textTransform:"uppercase",color:C.textDim,fontFamily:"sans-serif",marginBottom:4}}>In the cohort</div>
-                    <div style={{fontSize:11,color:C.textMuted,fontFamily:"sans-serif",lineHeight:1.55}}>{item.cohort}</div>
+                    <div style={{fontSize:9,letterSpacing:"0.1em",textTransform:"uppercase",color:C.textDim,fontFamily:FONTS.sans,marginBottom:4}}>In the cohort</div>
+                    <div style={{fontSize:11,color:C.textMuted,fontFamily:FONTS.sans,lineHeight:1.55}}>{item.cohort}</div>
                   </div>
                   <VBtn onClick={()=>onVoice(`Tell me more about what you've noticed with ${item.name}.`)} label="Discuss"/>
                 </div>
@@ -1288,7 +1231,7 @@ function Protocol({onVoice}) {
 
       <div style={{padding:"13px 16px",borderRadius:14,border:`1.5px dashed ${C.borderMid}`,display:"flex",alignItems:"center",justifyContent:"center",gap:8,cursor:"pointer",marginBottom:14}}>
         <span style={{fontSize:18,color:C.textDim,lineHeight:1}}>+</span>
-        <span style={{fontSize:12,color:C.textDim,fontFamily:"sans-serif"}}>Add something you're trying</span>
+        <span style={{fontSize:12,color:C.textDim,fontFamily:FONTS.sans}}>Add something you're trying</span>
       </div>
       <div style={{height:8}}/>
     </div>
@@ -1335,7 +1278,7 @@ function Patterns() {
           {Object.keys(RADIAL).map(sym=>{
             const on = selSym===null||selSym===sym;
             return (
-              <button key={sym} onClick={()=>setSelSym(selSym===sym?null:sym)} style={{display:"flex",alignItems:"center",gap:4,padding:"3px 10px",borderRadius:16,border:`1.5px solid ${on?RCOL[sym]:C.border}`,background:on?C.surface:C.bg,cursor:"pointer",fontFamily:"sans-serif",opacity:on?1:0.32,transition:"all 0.2s"}}>
+              <button key={sym} onClick={()=>setSelSym(selSym===sym?null:sym)} style={{display:"flex",alignItems:"center",gap:4,padding:"3px 10px",borderRadius:16,border:`1.5px solid ${on?RCOL[sym]:C.border}`,background:on?C.surface:C.bg,cursor:"pointer",fontFamily:FONTS.sans,opacity:on?1:0.32,transition:"all 0.2s"}}>
                 <div style={{width:7,height:7,borderRadius:"50%",background:RCOL[sym]}}/>
                 <span style={{fontSize:10,color:on?RCOL[sym]:C.textDim,fontWeight:500}}>{sym}</span>
               </button>
@@ -1373,25 +1316,25 @@ function Patterns() {
             {label:"Avg session",value:18,color:C.amber,fmt:v=>`${v} min`},
           ].map(s=>(
             <div key={s.label} style={{background:C.bg,borderRadius:12,padding:"12px",textAlign:"center"}}>
-              <div style={{fontSize:22,fontWeight:700,color:s.color,fontFamily:"sans-serif",lineHeight:1,marginBottom:4}}>{s.fmt(s.value)}</div>
-              <div style={{fontSize:9,color:C.textDim,fontFamily:"sans-serif",letterSpacing:"0.07em",textTransform:"uppercase",lineHeight:1.3}}>{s.label}</div>
+              <div style={{fontSize:22,fontWeight:700,color:s.color,fontFamily:FONTS.sans,lineHeight:1,marginBottom:4}}>{s.fmt(s.value)}</div>
+              <div style={{fontSize:9,color:C.textDim,fontFamily:FONTS.sans,letterSpacing:"0.07em",textTransform:"uppercase",lineHeight:1.3}}>{s.label}</div>
             </div>
           ))}
         </div>
         <div style={{marginBottom:12}}>
           <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
-            <span style={{fontSize:10,color:C.textDim,fontFamily:"sans-serif"}}>Sessions today vs daily avg</span>
-            <span style={{fontSize:10,color:C.teal,fontFamily:"sans-serif",fontWeight:600}}>{Math.round(stats.pct*100)}%</span>
+            <span style={{fontSize:10,color:C.textDim,fontFamily:FONTS.sans}}>Sessions today vs daily avg</span>
+            <span style={{fontSize:10,color:C.teal,fontFamily:FONTS.sans,fontWeight:600}}>{Math.round(stats.pct*100)}%</span>
           </div>
           <div style={{height:6,background:C.bg,borderRadius:3,overflow:"hidden"}}>
             <div style={{width:`${stats.pct*100}%`,height:"100%",background:`linear-gradient(90deg,${C.teal}88,${C.teal})`,borderRadius:3,transition:"width 1.4s ease"}}/>
           </div>
         </div>
-        <div style={{fontSize:9,letterSpacing:"0.1em",textTransform:"uppercase",color:C.textDim,fontFamily:"sans-serif",marginBottom:7}}>New variables this week</div>
+        <div style={{fontSize:9,letterSpacing:"0.1em",textTransform:"uppercase",color:C.textDim,fontFamily:FONTS.sans,marginBottom:7}}>New variables this week</div>
         {[["Methylene blue",C.teal],["Red light therapy",C.amber],["HBOT sessions",C.navy]].map(([v,col],i)=>(
           <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 10px",background:C.bg,borderRadius:8,marginBottom:4,borderLeft:`2px solid ${col}`}}>
-            <span style={{fontSize:11,color:C.textMuted,fontFamily:"sans-serif",flex:1}}>{v}</span>
-            <span style={{fontSize:9,color:col,fontFamily:"sans-serif",fontWeight:600,background:C.surface,padding:"1px 6px",borderRadius:8,border:`1px solid ${C.border}`}}>new</span>
+            <span style={{fontSize:11,color:C.textMuted,fontFamily:FONTS.sans,flex:1}}>{v}</span>
+            <span style={{fontSize:9,color:col,fontFamily:FONTS.sans,fontWeight:600,background:C.surface,padding:"1px 6px",borderRadius:8,border:`1px solid ${C.border}`}}>new</span>
           </div>
         ))}
       </Card>
@@ -1445,12 +1388,12 @@ function Body() {
       <Card style={{marginBottom:14}}>
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
           <div>
-            <div style={{fontSize:13,fontWeight:600,color:C.text,fontFamily:"'Helvetica Neue',sans-serif",marginBottom:2}}>Apple Watch</div>
-            <div style={{fontSize:11,color:C.textDim,fontFamily:"sans-serif"}}>Last synced 14 min ago · 12 weeks of data</div>
+            <div style={{fontSize:13,fontWeight:600,color:C.text,fontFamily:FONTS.sans,marginBottom:2}}>Apple Watch</div>
+            <div style={{fontSize:11,color:C.textDim,fontFamily:FONTS.sans}}>Last synced 14 min ago · 12 weeks of data</div>
           </div>
           <div style={{display:"flex",alignItems:"center",gap:5,padding:"5px 10px",borderRadius:12,background:C.greenSoft,border:`1px solid ${C.green}44`}}>
             <div style={{width:6,height:6,borderRadius:"50%",background:C.green}}/>
-            <span style={{fontSize:10,color:C.green,fontFamily:"sans-serif",fontWeight:600}}>Connected</span>
+            <span style={{fontSize:10,color:C.green,fontFamily:FONTS.sans,fontWeight:600}}>Connected</span>
           </div>
         </div>
       </Card>
@@ -1464,11 +1407,11 @@ function Body() {
             <div key={bm.key} onClick={()=>setMetric(bm.key)}
               style={{padding:"11px 12px",borderRadius:14,cursor:"pointer",
                 border:`1.5px solid ${on?bm.color:C.border}`,
-                background:on?bm.color+"11":C.surface,transition:"all 0.2s"}}>
-              <div style={{fontSize:9,color:on?bm.color:C.textDim,fontFamily:"sans-serif",
+                background:on?C.navySoft:C.surface,transition:"all 0.2s"}}>
+              <div style={{fontSize:9,color:on?bm.color:C.textDim,fontFamily:FONTS.sans,
                 letterSpacing:"0.08em",textTransform:"uppercase",marginBottom:4,fontWeight:on?"600":"400"}}>{bm.label.split(" ").slice(-1)[0]}</div>
-              <div style={{fontSize:17,fontWeight:700,color:on?bm.color:C.text,fontFamily:"sans-serif",lineHeight:1,marginBottom:3}}>{bm.fmt(bm.current)}</div>
-              <div style={{fontSize:10,color:imp?C.green:C.rose,fontFamily:"sans-serif",fontWeight:500}}>
+              <div style={{fontSize:17,fontWeight:700,color:on?bm.color:C.text,fontFamily:FONTS.sans,lineHeight:1,marginBottom:3}}>{bm.fmt(bm.current)}</div>
+              <div style={{fontSize:10,color:imp?C.green:C.rose,fontFamily:FONTS.sans,fontWeight:500}}>
                 {imp?"↑":"↓"} {Math.abs(Math.round(((bm.current-bm.baseline)/Math.abs(bm.baseline||1))*100))}% from start
               </div>
             </div>
@@ -1481,12 +1424,12 @@ function Body() {
         <Card style={{marginBottom:14}}>
           <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",marginBottom:12}}>
             <div>
-              <div style={{fontSize:13,fontWeight:600,color:C.text,fontFamily:"'Helvetica Neue',sans-serif",marginBottom:2}}>{m.label}</div>
-              <div style={{fontSize:11,color:C.textDim,fontFamily:"sans-serif"}}>12-week trend · Apple Watch</div>
+              <div style={{fontSize:13,fontWeight:600,color:C.text,fontFamily:FONTS.sans,marginBottom:2}}>{m.label}</div>
+              <div style={{fontSize:11,color:C.textDim,fontFamily:FONTS.sans}}>12-week trend · Apple Watch</div>
             </div>
             <div style={{textAlign:"right"}}>
-              <div style={{fontSize:18,fontWeight:700,color:m.color,fontFamily:"sans-serif",lineHeight:1}}>{m.fmt(m.current)}</div>
-              <div style={{fontSize:10,color:improved?C.green:C.rose,fontFamily:"sans-serif",marginTop:2}}>
+              <div style={{fontSize:18,fontWeight:700,color:m.color,fontFamily:FONTS.sans,lineHeight:1}}>{m.fmt(m.current)}</div>
+              <div style={{fontSize:10,color:improved?C.green:C.rose,fontFamily:FONTS.sans,marginTop:2}}>
                 {improved?"↑":"↓"} {Math.abs(pctChange)}% from W1
               </div>
             </div>
@@ -1495,16 +1438,16 @@ function Body() {
           <ResponsiveContainer width="100%" height={130}>
             <AreaChart data={WEARABLE_DATA} margin={{top:4,right:8,bottom:0,left:-24}}>
               <Grads/>
-              <XAxis dataKey="w" tick={{fill:C.textDim,fontSize:9,fontFamily:"sans-serif"}} axisLine={false} tickLine={false}/>
-              <YAxis tick={{fill:C.textDim,fontSize:9,fontFamily:"sans-serif"}} axisLine={false} tickLine={false}/>
+              <XAxis dataKey="w" tick={{fill:C.graphAxes,fontSize:9,fontFamily:FONTS.sans}} axisLine={false} tickLine={false}/>
+              <YAxis tick={{fill:C.graphAxes,fontSize:9,fontFamily:FONTS.sans}} axisLine={false} tickLine={false}/>
               <Tooltip content={<Tip/>}/>
-              <ReferenceLine y={m.baseline} stroke={m.color} strokeDasharray="4 3" strokeOpacity={0.35} strokeWidth={1}/>
-              <Area type="monotone" dataKey={m.key} name={m.label} stroke={m.color} strokeWidth={2}
-                fill={`url(#${m.grad})`} dot={false} activeDot={{r:4,fill:m.color,stroke:"white",strokeWidth:2}}/>
+              <ReferenceLine y={m.baseline} stroke={m.color} strokeDasharray="4 3" strokeOpacity={0.15} strokeWidth={1}/>
+              <Area type="monotone" dataKey={m.key} name={m.label} stroke={m.color} strokeWidth={2.5}
+                fill={`url(#${m.grad})`} dot={false} activeDot={{r:4,fill:m.color,stroke:C.onDark,strokeWidth:2}}/>
             </AreaChart>
           </ResponsiveContainer>
 
-          <div style={{fontSize:11,color:C.textDim,fontFamily:"sans-serif",lineHeight:1.65,
+          <div style={{fontSize:11,color:C.textDim,fontFamily:FONTS.sans,lineHeight:1.65,
             marginTop:10,padding:"9px 11px",background:C.bg,borderRadius:10,
             borderLeft:`3px solid ${m.color}`}}>
             {m.note}
@@ -1515,7 +1458,7 @@ function Body() {
       {/* Correlations */}
       <Card style={{marginBottom:14}}>
         <Label sub="Where passive data intersects your symptom record">Correlations</Label>
-        <div style={{fontSize:10,color:C.textDim,fontFamily:"sans-serif",lineHeight:1.6,
+        <div style={{fontSize:10,color:C.textDim,fontFamily:FONTS.sans,lineHeight:1.6,
           marginBottom:12,padding:"8px 10px",background:C.bg,borderRadius:8,
           borderLeft:`2px solid ${C.borderMid}`,fontStyle:"italic"}}>
           These are observed associations, not causes. They surface patterns worth reflecting on, not conclusions.
@@ -1526,24 +1469,24 @@ function Body() {
             <div key={i} onClick={()=>setCorrOpen(open?null:i)}
               style={{padding:"11px 13px",marginBottom:6,borderRadius:12,cursor:"pointer",
                 border:`1px solid ${open?corr.color:C.border}`,
-                background:open?corr.color+"0a":C.surface,transition:"all 0.2s"}}>
+                background:open?C.navySoft:C.surface,transition:"all 0.2s"}}>
               <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:open?8:0}}>
                 <div style={{flex:1}}>
                   <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:5}}>
-                    <span style={{fontSize:12,fontWeight:600,color:corr.color,fontFamily:"sans-serif"}}>{corr.a}</span>
-                    <span style={{fontSize:10,color:C.textDim,fontFamily:"sans-serif"}}>with</span>
-                    <span style={{fontSize:12,fontWeight:600,color:C.text,fontFamily:"sans-serif"}}>{corr.b}</span>
-                    <span style={{fontSize:9,color:C.textDim,fontFamily:"sans-serif",marginLeft:"auto"}}>{corr.weeks}</span>
+                    <span style={{fontSize:12,fontWeight:600,color:corr.color,fontFamily:FONTS.sans}}>{corr.a}</span>
+                    <span style={{fontSize:10,color:C.textDim,fontFamily:FONTS.sans}}>with</span>
+                    <span style={{fontSize:12,fontWeight:600,color:C.text,fontFamily:FONTS.sans}}>{corr.b}</span>
+                    <span style={{fontSize:9,color:C.textDim,fontFamily:FONTS.sans,marginLeft:"auto"}}>{corr.weeks}</span>
                   </div>
                   <div style={{display:"flex",alignItems:"center",gap:8}}>
                     <StrengthBar value={corr.strength} color={corr.color}/>
-                    <span style={{fontSize:10,color:corr.color,fontFamily:"sans-serif",fontWeight:600,flexShrink:0}}>{Math.round(corr.strength*100)}%</span>
+                    <span style={{fontSize:10,color:corr.color,fontFamily:FONTS.sans,fontWeight:600,flexShrink:0}}>{Math.round(corr.strength*100)}%</span>
                   </div>
                 </div>
                 <span style={{fontSize:12,color:C.textDim,transform:open?"rotate(180deg)":"none",transition:"transform 0.2s",flexShrink:0}}>⌄</span>
               </div>
               {open && (
-                <div style={{fontSize:11,color:C.textDim,fontFamily:"sans-serif",lineHeight:1.65,
+                <div style={{fontSize:11,color:C.textDim,fontFamily:FONTS.sans,lineHeight:1.65,
                   paddingTop:6,borderTop:`1px solid ${C.border}`}}>
                   {corr.note}
                 </div>
@@ -1556,7 +1499,7 @@ function Body() {
       {/* Observational note */}
       <div style={{padding:"12px 14px",borderRadius:12,background:C.bg,
         border:`1px solid ${C.border}`,marginBottom:14,
-        fontSize:11,color:C.textDim,lineHeight:1.65,fontFamily:"Georgia,serif",fontStyle:"italic",
+        fontSize:11,color:C.textDim,lineHeight:1.65,fontFamily:FONTS.sans,fontStyle:"italic",
         borderLeft:`3px solid ${C.gold}`}}>
         Wearable data doesn't replace your story. It anchors it in time — surfacing what memory can't reliably track and what a single clinical visit can't see.
       </div>
@@ -1587,13 +1530,13 @@ function PractitionerShare({onClose}) {
   return (
     <div style={{position:"absolute",inset:0,background:C.bg,borderRadius:46,display:"flex",flexDirection:"column",overflow:"hidden",zIndex:50}}>
       <div style={{padding:"8px 20px",background:C.surface,borderBottom:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0}}>
-        <button onClick={onClose} style={{background:"none",border:"none",fontSize:12,color:C.textDim,fontFamily:"sans-serif",cursor:"pointer"}}>← Back</button>
-        <div style={{fontSize:12,fontWeight:600,color:C.text,fontFamily:"sans-serif"}}>Share with practitioner</div>
+        <button onClick={onClose} style={{background:"none",border:"none",fontSize:12,color:C.textDim,fontFamily:FONTS.sans,cursor:"pointer"}}>← Back</button>
+        <div style={{fontSize:12,fontWeight:600,color:C.text,fontFamily:FONTS.sans}}>Share with practitioner</div>
         <div style={{width:40}}/>
       </div>
       <div style={{flex:1,overflowY:"auto",padding:"16px 14px"}}>
         {!preview ? <>
-          <div style={{padding:"11px 13px",marginBottom:14,background:C.navySoft,borderRadius:12,borderLeft:`3px solid ${C.navy}`,fontSize:11,color:C.textDim,lineHeight:1.65,fontFamily:"Georgia,serif",fontStyle:"italic"}}>
+          <div style={{padding:"11px 13px",marginBottom:14,background:C.navySoft,borderRadius:12,borderLeft:`3px solid ${C.navy}`,fontSize:11,color:C.textDim,lineHeight:1.65,fontFamily:FONTS.sans,fontStyle:"italic"}}>
             You decide what your practitioner sees. Select what's relevant for this appointment.
           </div>
           <Label sub="Select what to include">Curate your view</Label>
@@ -1601,11 +1544,11 @@ function PractitionerShare({onClose}) {
             <div key={item.key} onClick={()=>setSel(p=>({...p,[item.key]:!p[item.key]}))}
               style={{display:"flex",alignItems:"center",gap:12,padding:"11px 13px",marginBottom:6,borderRadius:12,cursor:"pointer",background:sel[item.key]?C.navySoft:C.surface,border:`1.5px solid ${sel[item.key]?C.navy:C.border}`,transition:"all 0.2s"}}>
               <div style={{width:18,height:18,borderRadius:5,flexShrink:0,background:sel[item.key]?C.navy:C.bg,border:`1.5px solid ${sel[item.key]?C.navy:C.borderMid}`,display:"flex",alignItems:"center",justifyContent:"center"}}>
-                {sel[item.key]&&<span style={{fontSize:11,color:"white",lineHeight:1}}>✓</span>}
+                {sel[item.key]&&<span style={{fontSize:11,color:C.onDark,lineHeight:1}}>✓</span>}
               </div>
               <div style={{flex:1}}>
-                <div style={{fontSize:12,fontWeight:500,color:sel[item.key]?C.navy:C.text,fontFamily:"sans-serif"}}>{item.label}</div>
-                <div style={{fontSize:10,color:C.textDim,fontFamily:"sans-serif"}}>{item.sub}</div>
+                <div style={{fontSize:12,fontWeight:500,color:sel[item.key]?C.navy:C.text,fontFamily:FONTS.sans}}>{item.label}</div>
+                <div style={{fontSize:10,color:C.textDim,fontFamily:FONTS.sans}}>{item.sub}</div>
               </div>
             </div>
           ))}
@@ -1613,46 +1556,46 @@ function PractitionerShare({onClose}) {
             <Label sub="Link expires after">Access duration</Label>
             <div style={{display:"flex",gap:6}}>
               {[{k:"24hrs",l:"24 hours"},{k:"7days",l:"7 days"},{k:"30days",l:"30 days"},{k:"once",l:"One-time"}].map(e=>(
-                <button key={e.k} onClick={()=>setExpiry(e.k)} style={{flex:1,padding:"7px 4px",borderRadius:10,fontSize:10,fontFamily:"sans-serif",border:`1px solid ${expiry===e.k?C.navy:C.border}`,background:expiry===e.k?C.navySoft:C.surface,color:expiry===e.k?C.navy:C.textDim,cursor:"pointer"}}>
+                <button key={e.k} onClick={()=>setExpiry(e.k)} style={{flex:1,padding:"7px 4px",borderRadius:10,fontSize:10,fontFamily:FONTS.sans,border:`1px solid ${expiry===e.k?C.navy:C.border}`,background:expiry===e.k?C.navySoft:C.surface,color:expiry===e.k?C.navy:C.textDim,cursor:"pointer"}}>
                   {e.l}
                 </button>
               ))}
             </div>
           </div>
-          <button onClick={()=>setPreview(true)} style={{width:"100%",padding:14,background:C.navy,border:"none",color:"white",borderRadius:14,fontSize:13,fontFamily:"sans-serif",cursor:"pointer",fontWeight:500}}>
+          <button onClick={()=>setPreview(true)} style={{width:"100%",padding:14,background:C.navySoft,border:"none",color:C.teal,borderRadius:14,fontSize:13,fontFamily:FONTS.sans,cursor:"pointer",fontWeight:500}}>
             Preview & generate link
           </button>
         </> : <>
           <Label sub="What your practitioner will see">Preview</Label>
           <div style={{background:C.surface,borderRadius:14,border:`1px solid ${C.border}`,overflow:"hidden",marginBottom:14}}>
             <div style={{padding:14,borderBottom:`1px solid ${C.border}`,background:C.navySoft}}>
-              <div style={{fontSize:12,fontWeight:600,color:C.navy,fontFamily:"sans-serif",marginBottom:2}}>LymePath — Practitioner View</div>
-              <div style={{fontSize:10,color:C.textDim,fontFamily:"sans-serif"}}>Shared by patient · Expires {expiry} · Read only</div>
+              <div style={{fontSize:12,fontWeight:600,color:C.navy,fontFamily:FONTS.sans,marginBottom:2}}>LymePath — Practitioner View</div>
+              <div style={{fontSize:10,color:C.textDim,fontFamily:FONTS.sans}}>Shared by patient · Expires {expiry} · Read only</div>
             </div>
             <div style={{padding:"12px 14px"}}>
               {items.filter(i=>sel[i.key]).map(item=>(
                 <div key={item.key} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 0",borderBottom:`1px solid ${C.border}`}}>
                   <div style={{width:6,height:6,borderRadius:"50%",background:C.navy}}/>
-                  <span style={{fontSize:11,color:C.textMuted,fontFamily:"sans-serif"}}>{item.label}</span>
-                  <span style={{fontSize:10,color:C.textDim,fontFamily:"sans-serif",marginLeft:"auto"}}>{item.sub}</span>
+                  <span style={{fontSize:11,color:C.textMuted,fontFamily:FONTS.sans}}>{item.label}</span>
+                  <span style={{fontSize:10,color:C.textDim,fontFamily:FONTS.sans,marginLeft:"auto"}}>{item.sub}</span>
                 </div>
               ))}
             </div>
-            <div style={{padding:"10px 13px",background:C.bg,fontSize:10,color:C.textDim,fontFamily:"sans-serif",lineHeight:1.6}}>
+            <div style={{padding:"10px 13px",background:C.bg,fontSize:10,color:C.textDim,fontFamily:FONTS.sans,lineHeight:1.6}}>
               This view is observational only. All clinical judgment remains with the practitioner.
             </div>
           </div>
           {!linked ? (
-            <button onClick={()=>setLinked(true)} style={{width:"100%",padding:14,background:C.navy,border:"none",color:"white",borderRadius:14,fontSize:13,fontFamily:"sans-serif",cursor:"pointer",fontWeight:500}}>
+            <button onClick={()=>setLinked(true)} style={{width:"100%",padding:14,background:C.navySoft,border:"none",color:C.teal,borderRadius:14,fontSize:13,fontFamily:FONTS.sans,cursor:"pointer",fontWeight:500}}>
               Generate secure link
             </button>
           ) : (
             <div style={{padding:14,background:C.greenSoft,borderRadius:14,border:`1px solid ${C.green}44`}}>
-              <div style={{fontSize:11,color:C.green,fontFamily:"sans-serif",fontWeight:600,marginBottom:6}}>Link generated</div>
-              <div style={{fontSize:12,color:C.textMuted,fontFamily:"sans-serif",background:C.surface,padding:"8px 10px",borderRadius:8,border:`1px solid ${C.border}`,marginBottom:8,wordBreak:"break-all"}}>lymepath.io/share/p7x2k9…</div>
+              <div style={{fontSize:11,color:C.green,fontFamily:FONTS.sans,fontWeight:600,marginBottom:6}}>Link generated</div>
+              <div style={{fontSize:12,color:C.textMuted,fontFamily:FONTS.sans,background:C.surface,padding:"8px 10px",borderRadius:8,border:`1px solid ${C.border}`,marginBottom:8,wordBreak:"break-all"}}>lymepath.io/share/p7x2k9…</div>
               <div style={{display:"flex",gap:6}}>
-                <button style={{flex:1,padding:10,background:C.navy,border:"none",color:"white",borderRadius:10,fontSize:12,fontFamily:"sans-serif",cursor:"pointer"}}>Copy link</button>
-                <button style={{flex:1,padding:10,background:C.surface,border:`1px solid ${C.border}`,color:C.textMuted,borderRadius:10,fontSize:12,fontFamily:"sans-serif",cursor:"pointer"}}>Email</button>
+                <button style={{flex:1,padding:10,background:C.navySoft,border:"none",color:C.teal,borderRadius:10,fontSize:12,fontFamily:FONTS.sans,cursor:"pointer"}}>Copy link</button>
+                <button style={{flex:1,padding:10,background:C.surface,border:`1px solid ${C.border}`,color:C.textMuted,borderRadius:10,fontSize:12,fontFamily:FONTS.sans,cursor:"pointer"}}>Email</button>
               </div>
             </div>
           )}
@@ -1675,12 +1618,12 @@ function Export({onClose}) {
   return (
     <div style={{position:"absolute",inset:0,background:C.bg,borderRadius:46,display:"flex",flexDirection:"column",overflow:"hidden",zIndex:50}}>
       <div style={{padding:"8px 20px",background:C.surface,borderBottom:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0}}>
-        <button onClick={onClose} style={{background:"none",border:"none",fontSize:12,color:C.textDim,fontFamily:"sans-serif",cursor:"pointer"}}>← Back</button>
-        <div style={{fontSize:12,fontWeight:600,color:C.text,fontFamily:"sans-serif"}}>Export record</div>
+        <button onClick={onClose} style={{background:"none",border:"none",fontSize:12,color:C.textDim,fontFamily:FONTS.sans,cursor:"pointer"}}>← Back</button>
+        <div style={{fontSize:12,fontWeight:600,color:C.text,fontFamily:FONTS.sans}}>Export record</div>
         <div style={{width:40}}/>
       </div>
       <div style={{flex:1,overflowY:"auto",padding:"16px 14px"}}>
-        <div style={{fontSize:11,color:C.textDim,fontFamily:"sans-serif",lineHeight:1.65,marginBottom:16}}>
+        <div style={{fontSize:11,color:C.textDim,fontFamily:FONTS.sans,lineHeight:1.65,marginBottom:16}}>
           Export a copy of your record for appointments, second opinions, or personal reference.
         </div>
         {[
@@ -1688,30 +1631,30 @@ function Export({onClose}) {
           {key:"csv",icon:"◈",title:"Full data export (CSV)",sub:"All logged variables, wearable data, and session-extracted entries.",color:C.steel},
           {key:"json",icon:"○",title:"Raw record (JSON)",sub:"Complete structured record for developers or custom tools.",color:C.textDim},
         ].map(f=>(
-          <div key={f.key} onClick={()=>setFmt(f.key)} style={{padding:"13px 16px",marginBottom:8,borderRadius:14,cursor:"pointer",border:`1.5px solid ${fmt===f.key?f.color:C.border}`,background:fmt===f.key?f.color+"11":C.surface,display:"flex",alignItems:"center",gap:14,transition:"all 0.2s"}}>
+          <div key={f.key} onClick={()=>setFmt(f.key)} style={{padding:"13px 16px",marginBottom:8,borderRadius:14,cursor:"pointer",border:`1.5px solid ${fmt===f.key?f.color:C.border}`,background:fmt===f.key?C.navySoft:C.surface,display:"flex",alignItems:"center",gap:14,transition:"all 0.2s"}}>
             <span style={{fontSize:18,color:f.color,opacity:0.7}}>{f.icon}</span>
             <div style={{flex:1}}>
-              <div style={{fontSize:13,fontWeight:500,color:fmt===f.key?f.color:C.text,fontFamily:"sans-serif",marginBottom:2}}>{f.title}</div>
-              <div style={{fontSize:10,color:C.textDim,fontFamily:"sans-serif"}}>{f.sub}</div>
+              <div style={{fontSize:13,fontWeight:500,color:fmt===f.key?f.color:C.text,fontFamily:FONTS.sans,marginBottom:2}}>{f.title}</div>
+              <div style={{fontSize:10,color:C.textDim,fontFamily:FONTS.sans}}>{f.sub}</div>
             </div>
             {fmt===f.key&&<div style={{width:8,height:8,borderRadius:"50%",background:f.color}}/>}
           </div>
         ))}
-        <div style={{marginTop:6,padding:"10px 12px",background:C.bg,borderRadius:12,fontSize:10,color:C.textDim,fontFamily:"sans-serif",lineHeight:1.6,marginBottom:14}}>
+        <div style={{marginTop:6,padding:"10px 12px",background:C.bg,borderRadius:12,fontSize:10,color:C.textDim,fontFamily:FONTS.sans,lineHeight:1.6,marginBottom:14}}>
           Exports contain only your data. Nothing from the anonymized cohort is included.
         </div>
         {!done ? (
-          <button onClick={go} disabled={!fmt||exporting} style={{width:"100%",padding:14,background:fmt&&!exporting?C.navy:"#d0d3dc",border:"none",color:"white",borderRadius:14,fontSize:13,fontFamily:"sans-serif",cursor:fmt&&!exporting?"pointer":"default",fontWeight:500,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
+          <button onClick={go} disabled={!fmt||exporting} style={{width:"100%",padding:14,background:fmt&&!exporting?C.navySoft:"var(--lp-disabled-bg)",border:"none",color:fmt&&!exporting?C.teal:"var(--lp-disabled-text)",borderRadius:14,fontSize:13,fontFamily:FONTS.sans,cursor:fmt&&!exporting?"pointer":"default",fontWeight:500,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
             {exporting ? <>
-              <div style={{width:14,height:14,border:"2px solid rgba(255,255,255,0.4)",borderTop:"2px solid white",borderRadius:"50%",animation:"spin 0.8s linear infinite"}}/>
+              <div style={{width:14,height:14,border:"2px solid var(--lp-spinner-track)",borderTop:"2px solid var(--lp-spinner-head)",borderRadius:"50%",animation:"spin 0.8s linear infinite"}}/>
               Preparing…
             </> : "Export record"}
           </button>
         ) : (
           <div style={{padding:14,background:C.greenSoft,borderRadius:14,border:`1px solid ${C.green}44`,textAlign:"center"}}>
             <div style={{fontSize:20,marginBottom:6}}>◉</div>
-            <div style={{fontSize:13,color:C.green,fontFamily:"sans-serif",fontWeight:600,marginBottom:4}}>Export ready</div>
-            <div style={{fontSize:11,color:C.textDim,fontFamily:"sans-serif"}}>Your record has been prepared for download.</div>
+            <div style={{fontSize:13,color:C.green,fontFamily:FONTS.sans,fontWeight:600,marginBottom:4}}>Export ready</div>
+            <div style={{fontSize:11,color:C.textDim,fontFamily:FONTS.sans}}>Your record has been prepared for download.</div>
           </div>
         )}
       </div>
@@ -1730,50 +1673,193 @@ const TABS = [
 ];
 
 export default function App() {
-  const [screen, setScreen] = useState("onboarding");
+  const [screen, setScreen] = useState(
+    () => (localStorage.getItem(ONBOARDED_STORAGE) === "true" ? "app" : "onboarding")
+  );
   const [tab, setTab] = useState("record");
   const [voicePrompt, setVoicePrompt] = useState(null);
   const [overlay, setOverlay] = useState(null); // "share" | "export" | null
-  const [elKey, setElKey] = useState("");
-  const [anthropicKey, setAnthropicKey] = useState("");
+  const [elKey, setElKey] = useState(() => localStorage.getItem(ELEVEN_KEY_STORAGE) || "");
+  const [anthropicKey, setOpenaiKey] = useState(() => localStorage.getItem(ANTHROPIC_KEY_STORAGE) || "");
   const [showKeyInput, setShowKeyInput] = useState(false);
+  const [dark, setDark] = useState(false);
 
   const goVoice = (prompt=null) => { setVoicePrompt(prompt); setScreen("voice"); };
   const backFromVoice = () => { setScreen("app"); setVoicePrompt(null); };
+  const finishOnboarding = () => {
+    localStorage.setItem(ONBOARDED_STORAGE, "true");
+    setScreen("app");
+  };
+
+  useEffect(() => {
+    localStorage.setItem(ANTHROPIC_KEY_STORAGE, anthropicKey);
+  }, [anthropicKey]);
+
+  useEffect(() => {
+    localStorage.setItem(ELEVEN_KEY_STORAGE, elKey);
+  }, [elKey]);
 
   return (
-    <div style={{background:"#e8e9ee",minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",padding:20,fontFamily:"Georgia,'Times New Roman',serif"}}>
+    <div
+      className=""
+      style={{
+        backgroundColor:"#E8ECF0",
+        backgroundImage:
+          "radial-gradient(var(--lp-grain-a) 0.45px, transparent 0.45px), radial-gradient(var(--lp-grain-b) 0.45px, transparent 0.45px)",
+        backgroundSize:"3px 3px, 5px 5px",
+        backgroundPosition:"0 0, 1px 2px",
+        minHeight:"100vh",
+        display:"flex",
+        alignItems:"center",
+        justifyContent:"center",
+        padding:20,
+        fontFamily: FONTS.sans,
+      }}
+    >
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&family=DM+Mono:wght@300;400&display=swap');
+
+        :root {
+          --lp-bg:          #F2F4F6;
+          --lp-surface:     #FFFFFF;
+          --lp-surface-alt: #F7F9FA;
+          --lp-border:      rgba(0,0,0,0.07);
+          --lp-border-mid:  rgba(0,0,0,0.12);
+          --lp-text:        #0F1923;
+          --lp-text-muted:  #526070;
+          --lp-text-dim:    #96A4B0;
+          --lp-ink:         #0F1923;
+          --lp-ink-soft:    #E8F0F8;
+          --lp-accent:      #1A9E96;
+          --lp-accent-mid:  #158C84;
+          --lp-accent-soft: #E6F7F6;
+          --lp-accent-text: #0D6E68;
+          --lp-green:       #1A9E96;
+          --lp-green-soft:  #E6F7F6;
+          --lp-amber:       #D4840A;
+          --lp-amber-soft:  #FEF4E4;
+          --lp-steel:       #3A6299;
+          --lp-steel-soft:  #EAF0FA;
+          --lp-plum:        #8B44AA;
+          --lp-plum-soft:   #F5EAFA;
+          --lp-terra:       #C44B2A;
+          --lp-terra-soft:  #FDEEE9;
+          --lp-gold:        #D4840A;
+          --lp-gold-soft:   #FEF4E4;
+          --lp-rose:        #C43060;
+          --lp-rose-soft:   #FDEAF2;
+          --lp-danger:      #D03030;
+          --lp-danger-bg:   #FEF0F0;
+          --lp-overlay:     rgba(15,25,35,0.52);
+          --lp-notch:       #D8DDE2;
+          --lp-shadow:      0 1px 3px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.04);
+          --lp-shadow-md:   0 2px 8px rgba(0,0,0,0.08), 0 4px 20px rgba(0,0,0,0.06);
+          --lp-shell:       0 24px 64px rgba(0,0,0,0.14), 0 4px 16px rgba(0,0,0,0.08);
+        }
+
         @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
         @keyframes spin{to{transform:rotate(360deg)}}
-        @keyframes pulse{0%,100%{opacity:0.4}50%{opacity:1}}
+        @keyframes lp-breathe{0%,100%{transform:scaleY(0.25);opacity:0.35}50%{transform:scaleY(1);opacity:1}}
+        @keyframes lp-fade-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+        @keyframes lp-pulse-ring{0%{transform:scale(0.9);opacity:0.5}100%{transform:scale(1.15);opacity:0}}
+        @keyframes lp-record-appear{from{opacity:0;transform:translateX(-4px)}to{opacity:1;transform:none}}
+        @keyframes lp-slide-up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+        * { box-sizing: border-box; }
         ::-webkit-scrollbar{width:3px}
-        ::-webkit-scrollbar-thumb{background:#cdd0db;border-radius:2px}
+        ::-webkit-scrollbar-thumb{background:var(--lp-border-mid);border-radius:3px}
+
+        body, input, button { font-family: 'DM Sans', 'Helvetica Neue', sans-serif; }
+
+        .lp-tab-btn { color: var(--lp-text-dim); transition: color 0.18s; }
+        .lp-tab-btn.active { color: var(--lp-accent); }
+        .lp-tab-indicator { height: 2px; background: var(--lp-accent); border-radius: 2px; transition: opacity 0.2s; }
+
+        .lp-record-item { animation: lp-record-appear 0.3s ease forwards; }
+        .lp-session-text { animation: lp-fade-in 0.35s ease forwards; }
+        .lp-wave-bar { animation: lp-breathe 1.4s ease-in-out infinite; transform-origin: bottom; }
+        .lp-slide-up { animation: lp-slide-up 0.4s ease forwards; }
+
+        .lp-btn-primary {
+          background: var(--lp-accent);
+          color: #fff;
+          border: none;
+          border-radius: 100px;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 14px;
+          font-weight: 600;
+          letter-spacing: 0.01em;
+          cursor: pointer;
+          transition: background 0.15s, transform 0.1s;
+        }
+        .lp-btn-primary:hover { background: var(--lp-accent-mid); }
+        .lp-btn-primary:active { transform: scale(0.97); }
+
+        .lp-btn-ghost {
+          background: transparent;
+          border: 1.5px solid var(--lp-border-mid);
+          color: var(--lp-text-muted);
+          border-radius: 100px;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 13px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.15s;
+        }
+        .lp-btn-ghost:hover { border-color: var(--lp-accent); color: var(--lp-accent); }
+
+        .lp-card {
+          background: var(--lp-surface);
+          border-radius: 18px;
+          border: 1px solid var(--lp-border);
+          box-shadow: var(--lp-shadow);
+        }
+
+        .lp-tag {
+          font-family: 'DM Sans', sans-serif;
+          font-size: 11px;
+          font-weight: 600;
+          letter-spacing: 0.01em;
+          padding: 3px 10px;
+          border-radius: 100px;
+        }
+
+        .lp-pill {
+          font-family: 'DM Sans', sans-serif;
+          font-size: 12px;
+          font-weight: 500;
+          padding: 5px 13px;
+          border-radius: 100px;
+          border: 1.5px solid transparent;
+          cursor: pointer;
+          transition: all 0.15s;
+        }
+        .lp-pill:hover { opacity: 0.88; }
       `}</style>
-      <div style={{width:390,height:844,background:C.bg,borderRadius:48,border:`2px solid ${C.borderMid}`,boxShadow:"0 24px 80px rgba(0,0,0,0.18),0 4px 16px rgba(0,0,0,0.08)",display:"flex",flexDirection:"column",overflow:"hidden",position:"relative"}}>
+      <div style={{width:390,height:844,background:"var(--lp-bg)",borderRadius:44,border:"1px solid var(--lp-border)",boxShadow:"var(--lp-shell)",display:"flex",flexDirection:"column",overflow:"hidden",position:"relative",fontFamily:FONTS.sans}}>
 
         {/* ElevenLabs key drawer — floats over everything when open */}
         {showKeyInput && (
-          <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,0.4)",zIndex:100,display:"flex",alignItems:"flex-end",borderRadius:46}}>
+          <div style={{position:"absolute",inset:0,background:C.overlay,zIndex:100,display:"flex",alignItems:"flex-end",borderRadius:46}}>
             <div style={{width:"100%",background:C.surface,borderRadius:"24px 24px 0 0",padding:"20px 20px 32px"}}>
-              <div style={{fontSize:13,fontWeight:600,color:C.text,fontFamily:"sans-serif",marginBottom:12}}>API Keys</div>
+              <div style={{fontSize:16,fontWeight:500,color:C.navy,fontFamily:FONTS.sans,marginBottom:6,letterSpacing:"-0.01em"}}>API Keys</div><div style={{fontSize:12,color:C.textDim,fontFamily:FONTS.sans,marginBottom:16,lineHeight:1.6}}>Keys stay in your browser only and are never sent to LymePath.</div>
               
-              <div style={{fontSize:10,color:C.textDim,fontFamily:"sans-serif",marginBottom:4,letterSpacing:"0.06em",textTransform:"uppercase"}}>Anthropic (Claude)</div>
-              <input value={anthropicKey} onChange={e=>setAnthropicKey(e.target.value)}
-                placeholder="sk-ant-..."
+              <div style={{fontSize:10,color:C.textDim,fontFamily:FONTS.sans,marginBottom:4,letterSpacing:"0.06em",textTransform:"uppercase"}}>Anthropic (Claude)</div>
+              <input value={anthropicKey} onChange={e=>setOpenaiKey(e.target.value)}
+                placeholder="sk-..."
                 type="password"
-                style={{width:"100%",padding:"10px 12px",borderRadius:10,border:`1px solid ${anthropicKey?C.navy:C.border}`,fontSize:13,fontFamily:"sans-serif",color:C.text,background:C.bg,boxSizing:"border-box",outline:"none",marginBottom:10}}/>
+                style={{width:"100%",padding:"10px 12px",borderRadius:10,border:`1px solid ${anthropicKey?C.navy:C.border}`,fontSize:13,fontFamily:FONTS.sans,color:C.text,background:C.bg,boxSizing:"border-box",outline:"none",marginBottom:10}}/>
 
-              <div style={{fontSize:10,color:C.textDim,fontFamily:"sans-serif",marginBottom:4,letterSpacing:"0.06em",textTransform:"uppercase"}}>ElevenLabs (voice)</div>
+              <div style={{fontSize:10,color:C.textDim,fontFamily:FONTS.sans,marginBottom:4,letterSpacing:"0.06em",textTransform:"uppercase"}}>ElevenLabs (voice)</div>
               <input value={elKey} onChange={e=>setElKey(e.target.value)}
                 placeholder="sk_..."
                 type="password"
-                style={{width:"100%",padding:"10px 12px",borderRadius:10,border:`1px solid ${elKey?C.teal:C.border}`,fontSize:13,fontFamily:"sans-serif",color:C.text,background:C.bg,boxSizing:"border-box",outline:"none",marginBottom:4}}/>
-              <div style={{fontSize:10,color:C.textDim,fontFamily:"sans-serif",lineHeight:1.5,marginBottom:14}}>
+                style={{width:"100%",padding:"10px 12px",borderRadius:10,border:`1px solid ${elKey?C.teal:C.border}`,fontSize:13,fontFamily:FONTS.sans,color:C.text,background:C.bg,boxSizing:"border-box",outline:"none",marginBottom:4}}/>
+              <div style={{fontSize:10,color:C.textDim,fontFamily:FONTS.sans,lineHeight:1.5,marginBottom:14}}>
                 Keys stay in your browser only. Get ElevenLabs key at elevenlabs.io/app/settings/api-keys
               </div>
 
-              <button onClick={()=>setShowKeyInput(false)} style={{width:"100%",padding:12,background:anthropicKey?C.navy:"#d0d3dc",border:"none",color:"white",borderRadius:12,fontSize:13,fontFamily:"sans-serif",cursor:"pointer",fontWeight:500}}>
+              <button onClick={()=>setShowKeyInput(false)} style={{width:"100%",padding:12,background:anthropicKey?C.navySoft:"var(--lp-disabled-bg)",border:"none",color:anthropicKey?C.teal:"var(--lp-disabled-text)",borderRadius:12,fontSize:13,fontFamily:FONTS.sans,cursor:"pointer",fontWeight:500}}>
                 {anthropicKey?"Save & close":"Close"}
               </button>
             </div>
@@ -1781,17 +1867,17 @@ export default function App() {
         )}
 
         {/* Notch */}
-        <div style={{width:126,height:34,background:"#111",borderRadius:"0 0 20px 20px",margin:"0 auto",flexShrink:0}}/>
+        <div style={{width:120,height:32,background:"var(--lp-notch)",borderRadius:"0 0 18px 18px",margin:"0 auto",flexShrink:0}}/>
 
         {/* ONBOARDING */}
         {screen==="onboarding" && <>
-          <div style={{padding:"6px 22px 6px",borderBottom:`1px solid ${C.border}`,background:C.surface,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
+          <div style={{padding:"10px 22px",borderBottom:`1px solid ${C.border}`,background:C.surface,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
             <Logo size={20}/>
-            <span style={{fontSize:15,fontWeight:300,color:C.navy,letterSpacing:"0.02em",fontFamily:"'Helvetica Neue',sans-serif"}}>LymePath</span>
+            <span style={{fontSize:17,fontWeight:700,color:C.navy,letterSpacing:"-0.02em",fontFamily:FONTS.sans}}>LymePath</span>
           </div>
-          <Onboarding onComplete={()=>setScreen("app")}/>
+          <Onboarding onComplete={finishOnboarding}/>
           <div style={{height:28,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,background:C.surface,borderTop:`1px solid ${C.border}`}}>
-            <div style={{width:134,height:4,background:C.borderMid,borderRadius:3}}/>
+            <div style={{width:120,height:4,background:C.borderMid,borderRadius:2,opacity:0.5}}/>
           </div>
         </>}
 
@@ -1804,30 +1890,35 @@ export default function App() {
           {overlay==="export" && <Export onClose={()=>setOverlay(null)}/>}
 
           {/* Header */}
-          <div style={{padding:"7px 14px",borderBottom:`1px solid ${C.border}`,background:C.surface,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+          <div style={{padding:"10px 18px",borderBottom:`1px solid ${C.border}`,background:C.surface,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
             <div style={{display:"flex",alignItems:"center",gap:8}}>
               <Logo size={22}/>
-              <span style={{fontSize:15,fontWeight:300,color:C.navy,letterSpacing:"0.02em",fontFamily:"'Helvetica Neue',sans-serif"}}>LymePath</span>
+              <span style={{fontSize:17,fontWeight:700,color:C.navy,letterSpacing:"-0.02em",fontFamily:FONTS.sans}}>LymePath</span>
             </div>
             <div style={{display:"flex",alignItems:"center",gap:5}}>
-              <button onClick={()=>setOverlay("export")} style={{display:"flex",alignItems:"center",gap:3,background:C.bg,border:`1px solid ${C.border}`,color:C.textDim,borderRadius:14,padding:"4px 9px",fontSize:10,fontFamily:"sans-serif",cursor:"pointer"}}>↓ Export</button>
-              <button onClick={()=>setOverlay("share")} style={{display:"flex",alignItems:"center",gap:3,background:C.steelSoft,border:`1px solid ${C.steel}44`,color:C.steel,borderRadius:14,padding:"4px 9px",fontSize:10,fontFamily:"sans-serif",cursor:"pointer"}}>◈ Share</button>
-              <button onClick={()=>setShowKeyInput(true)} style={{display:"flex",alignItems:"center",gap:3,background:anthropicKey?C.greenSoft:C.bg,border:`1px solid ${anthropicKey?C.green+"44":C.border}`,color:anthropicKey?C.green:C.textDim,borderRadius:14,padding:"4px 9px",fontSize:10,fontFamily:"sans-serif",cursor:"pointer"}}>{anthropicKey?"● Keys":"○ Keys"}</button>
-              <button onClick={()=>goVoice(null)} style={{display:"flex",alignItems:"center",gap:4,background:C.tealSoft,border:`1px solid ${C.teal}44`,color:C.teal,borderRadius:14,padding:"4px 9px",fontSize:10,fontFamily:"sans-serif",cursor:"pointer",fontWeight:500}}>◎ Session</button>
+              <button onClick={()=>setOverlay("export")} className="lp-btn-ghost" style={{padding:"4px 10px"}}>Export</button>
+              <button onClick={()=>setOverlay("share")} className="lp-btn-ghost" style={{padding:"4px 10px",color:C.steel,borderColor:C.steelSoft}}>Share</button>
+              <button onClick={()=>setShowKeyInput(true)} className="lp-btn-ghost" style={{padding:"4px 10px",color:anthropicKey?C.green:C.textDim,borderColor:anthropicKey?C.greenSoft:C.border}}>{anthropicKey?"● Keys":"○ Keys"}</button>
+              <button onClick={()=>goVoice(null)} className="lp-btn-primary" style={{padding:"6px 14px"}}>Session</button>
             </div>
           </div>
 
           {/* Tabs */}
-          <div style={{display:"flex",background:C.surface,borderBottom:`1px solid ${C.border}`,flexShrink:0}}>
+          <div style={{display:"flex",background:C.surface,borderBottom:`1px solid ${C.border}`,flexShrink:0,padding:"0 4px"}}>
             {TABS.map(t=>(
-              <button key={t.key} onClick={()=>setTab(t.key)} style={{
-                flex:1,padding:"9px 4px",fontSize:11,fontFamily:"sans-serif",
-                color:tab===t.key?C.navy:C.textDim,fontWeight:tab===t.key?"600":"400",
-                background:"none",border:"none",cursor:"pointer",transition:"all 0.15s",
-                borderBottom:tab===t.key?`2px solid ${C.navy}`:"2px solid transparent",
-                display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
-                <span style={{fontSize:12,opacity:tab===t.key?1:0.4}}>{t.icon}</span>
-                <span>{t.label}</span>
+              <button
+                key={t.key}
+                className={`lp-tab-btn ${tab===t.key ? "active" : ""}`}
+                onClick={()=>setTab(t.key)}
+                style={{
+                  flex:1,padding:"10px 4px 8px",fontSize:11,fontFamily:FONTS.sans,
+                  fontWeight:tab===t.key?"600":"400",letterSpacing:"0.01em",
+                  background:"none",border:"none",cursor:"pointer",
+                  display:"flex",flexDirection:"column",alignItems:"center",gap:3,position:"relative"
+                }}>
+                <span style={{fontSize:11,opacity:tab===t.key?1:0.5,transition:"opacity 0.2s"}}>{t.icon}</span>
+                <span style={{fontSize:10}}>{t.label}</span>
+                <div className="lp-tab-indicator" style={{position:"absolute",bottom:0,left:"15%",right:"15%",opacity:tab===t.key?1:0}}/>
               </button>
             ))}
           </div>
@@ -1842,7 +1933,7 @@ export default function App() {
 
           {/* Home bar */}
           <div style={{height:28,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,background:C.surface,borderTop:`1px solid ${C.border}`}}>
-            <div style={{width:134,height:4,background:C.borderMid,borderRadius:3}}/>
+            <div style={{width:120,height:4,background:C.borderMid,borderRadius:2,opacity:0.5}}/>
           </div>
         </>}
 
